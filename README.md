@@ -1,9 +1,10 @@
 # Todo CLI - Phase 1: In-Memory Task Manager
 
-A clean, beginner-friendly command-line todo application built with Python 3.13+ following Clean Architecture principles. This is Phase 1 of a multi-phase project demonstrating professional software design patterns in a simple, educational context.
+A clean, beginner-friendly **menu-driven** command-line todo application built with Python 3.13+ following Clean Architecture principles. Features an intuitive numbered menu interface with step-by-step prompts, perfect for learning professional software design patterns in an accessible way.
 
 ## Table of Contents
 
+- [Quick Start](#quick-start)
 - [Overview](#overview)
 - [Features](#features)
 - [Tech Stack](#tech-stack)
@@ -11,37 +12,77 @@ A clean, beginner-friendly command-line todo application built with Python 3.13+
 - [Setup Instructions](#setup-instructions)
 - [Usage](#usage)
 - [Available Commands](#available-commands)
+- [Menu-Driven vs Command-Based Interface](#menu-driven-vs-command-based-interface)
 - [Phase 1 Scope](#phase-1-scope)
 - [Project Structure](#project-structure)
 - [Design Decisions](#design-decisions)
 - [Future Phases](#future-phases)
+- [Example Session](#example-session)
+- [Error Handling Examples](#error-handling-examples)
 - [Contributing](#contributing)
+
+---
+
+## Quick Start
+
+Want to jump right in? Here's how to get started in under a minute:
+
+```bash
+# 1. Clone the repository
+git clone <repository-url>
+cd todo-cli-phase1
+
+# 2. Run the application (Python 3.13+ required)
+cd src
+python3 main.py
+```
+
+That's it! You'll see a numbered menu (1-8). Simply select an option and follow the prompts.
+
+**Example First Interaction:**
+```
+Select an option (1-8): 1
+Enter task title: My first task
+Enter task description (optional): Learning to use Todo CLI
+
+✓ Task created successfully!
+```
+
+**Two ways to interact:**
+- **Beginner:** Select menu numbers (1-8) and follow prompts
+- **Power user:** Type commands directly (e.g., `add "Task" "Description"`)
 
 ---
 
 ## Overview
 
-Todo CLI is a terminal-based task management application designed to demonstrate clean code principles and architectural patterns while remaining accessible to beginners. The application provides a simple, intuitive interface for managing daily tasks entirely in memory.
+Todo CLI is a terminal-based task management application designed to demonstrate clean code principles and architectural patterns while remaining accessible to beginners. The application provides a simple, intuitive **menu-driven interface** for managing daily tasks entirely in memory, with support for both guided prompts and direct command entry.
 
 **Key Highlights:**
-- Clean Architecture implementation
-- 100% Python standard library (no external dependencies)
-- Beginner-friendly codebase
-- Professional error handling
-- Interactive CLI experience
+- **Menu-Driven Interface** - Numbered options (1-8) for easy navigation
+- **Dual Input Mode** - Choose between menu prompts or direct commands
+- **Clean Architecture** - Professional implementation with clear layer separation
+- **100% Python Standard Library** - No external dependencies required
+- **Beginner-Friendly** - Clear prompts, helpful error messages, and intuitive flow
+- **Professional Error Handling** - Comprehensive validation and user guidance
+- **Beautiful Output** - Formatted tables with box-drawing characters
+- **Interactive Experience** - Step-by-step prompts for all operations
 
 ---
 
 ## Features
 
-- **Create Tasks**: Add tasks with titles and optional descriptions
-- **List Tasks**: View all tasks in a formatted table
-- **Update Tasks**: Modify task titles and descriptions
+- **Menu-Driven Interface**: User-friendly numbered menu (1-8) for easy navigation
+- **Dual Input Mode**: Choose between menu-driven or direct command entry
+- **Create Tasks**: Add tasks with titles and optional descriptions through guided prompts
+- **List Tasks**: View all tasks in a formatted table with box-drawing characters
+- **Update Tasks**: Modify task titles and descriptions with flexible options
 - **Delete Tasks**: Remove tasks you no longer need
-- **Task Status**: Mark tasks as completed or pending
+- **Task Status**: Mark tasks as completed or pending with visual feedback
 - **Command Aliases**: Multiple ways to invoke commands (e.g., `ls`, `list`, `all`)
 - **Input Validation**: Comprehensive validation with helpful error messages
-- **Beautiful Output**: Formatted tables and clear success/error messages
+- **Beautiful Output**: Formatted tables with borders and clear success/error messages
+- **Interactive Prompts**: Step-by-step guidance for each operation
 
 ---
 
@@ -155,34 +196,55 @@ uv run python main.py
 ║        Your simple in-memory task manager          ║
 ╚════════════════════════════════════════════════════╝
 
-Type 'help' to see available commands.
-Type 'exit' to quit.
+══════════════════════════════════════════════════════
+MAIN MENU
+══════════════════════════════════════════════════════
+1. Add Task          - Create a new task
+2. List Tasks        - View all tasks
+3. Update Task       - Modify an existing task
+4. Delete Task       - Remove a task
+5. Complete Task     - Mark task as completed
+6. Uncomplete Task   - Mark task as pending
+7. Help              - Show detailed help
+8. Exit              - Quit the application
+══════════════════════════════════════════════════════
 
-todo>
+Select an option (1-8):
 ```
+
+**Note:** The application features a user-friendly menu-driven interface. Simply enter a number (1-8) to select an option. Advanced users can also type commands directly (e.g., `add`, `list`, `delete`).
 
 ---
 
 ## Available Commands
 
-### Basic Commands
+### Menu Options
 
-| Command | Aliases | Description | Example |
-|---------|---------|-------------|---------|
-| `add` | `create`, `new` | Create a new task | `add "Buy milk" "From store"` |
-| `list` | `ls`, `all` | Display all tasks | `list` |
-| `update` | `edit`, `modify` | Update a task | `update 1 --title "New title"` |
-| `delete` | `remove`, `rm` | Delete a task | `delete 1` |
-| `complete` | `done`, `finish` | Mark task as completed | `complete 1` |
-| `uncomplete` | `incomplete`, `undo` | Mark task as pending | `uncomplete 1` |
-| `help` | `?`, `h` | Show help message | `help` |
-| `exit` | `quit`, `q` | Exit application | `exit` |
+The application features an intuitive menu-driven interface:
 
-### Detailed Command Usage
+| Option | Command | Aliases | Description |
+|--------|---------|---------|-------------|
+| **1** | `add` | `create`, `new` | Create a new task with title and description |
+| **2** | `list` | `ls`, `all` | Display all tasks in a formatted table |
+| **3** | `update` | `edit`, `modify` | Update a task's title or description |
+| **4** | `delete` | `remove`, `rm` | Delete a task permanently |
+| **5** | `complete` | `done`, `finish` | Mark task as completed |
+| **6** | `uncomplete` | `incomplete`, `undo` | Mark task as pending |
+| **7** | `help` | `?`, `h` | Show detailed help message |
+| **8** | `exit` | `quit`, `q` | Exit the application |
 
-#### Add a Task
-```bash
-todo> add "Buy groceries" "Milk, eggs, bread"
+**Two Ways to Use:**
+1. **Menu-driven (Beginner-friendly):** Select option numbers (1-8) and follow prompts
+2. **Command-based (Power users):** Type commands directly with arguments
+
+### Detailed Usage Examples
+
+#### 1. Add a Task (Menu-driven)
+```
+Select an option (1-8): 1
+Enter task title: Buy groceries
+Enter task description (optional): Milk, eggs, bread
+
 ✓ Task created successfully!
 
   ID: 1
@@ -192,9 +254,14 @@ todo> add "Buy groceries" "Milk, eggs, bread"
   Created: 2025-12-26 14:30:45
 ```
 
-#### List All Tasks
-```bash
-todo> list
+Or using direct command:
+```
+Select an option (1-8): add "Buy groceries" "Milk, eggs, bread"
+```
+
+#### 2. List All Tasks
+```
+Select an option (1-8): 2
 
 ┌────┬────────────────────┬──────────────────────┬───────────┐
 │ ID │ Title              │ Description          │ Status    │
@@ -207,32 +274,95 @@ todo> list
 Total: 3 tasks (2 pending, 1 completed)
 ```
 
-#### Update a Task
-```bash
-todo> update 1 --title "Buy groceries and supplies"
+#### 3. Update a Task (Menu-driven)
+```
+Select an option (1-8): 3
+Enter task ID: 1
+
+What would you like to update?
+1. Title only
+2. Description only
+3. Both title and description
+Select option (1-3): 1
+Enter new title: Buy groceries and supplies
+
 ✓ Task 1 updated successfully!
 
-todo> update 1 --description "Milk, eggs, bread, and cleaning supplies"
-✓ Task 1 updated successfully!
-
-todo> update 1 --title "Shopping" --description "Weekly groceries"
-✓ Task 1 updated successfully!
+  ID: 1
+  Title: Buy groceries and supplies
+  Description: Milk, eggs, bread
+  Status: pending
+  Created: 2025-12-26 14:30:45
 ```
 
-#### Complete a Task
-```bash
-todo> complete 1
+Or using direct command:
+```
+Select an option (1-8): update 1 --title "Shopping" --description "Weekly groceries"
+```
+
+#### 4. Complete a Task
+```
+Select an option (1-8): 5
+Enter task ID: 1
+
 ✓ Task 1 marked as completed!
 
   Title: Buy groceries
   Status: completed
 ```
 
-#### Delete a Task
-```bash
-todo> delete 1
+#### 5. Delete a Task
+```
+Select an option (1-8): 4
+Enter task ID: 1
+
 ✓ Task 1 deleted successfully!
 ```
+
+---
+
+## Menu-Driven vs Command-Based Interface
+
+This application supports **two ways of interaction** to accommodate different user preferences:
+
+### 1. Menu-Driven Mode (Recommended for Beginners)
+
+Simply select a number from the menu (1-8) and follow the interactive prompts:
+
+```bash
+Select an option (1-8): 1        # Choose "Add Task"
+Enter task title: Buy groceries   # Enter title when prompted
+Enter task description (optional): Milk, bread, eggs  # Enter description
+```
+
+**Benefits:**
+- No need to remember command syntax
+- Step-by-step guidance
+- Interactive prompts for all inputs
+- Clear options displayed at each step
+- Ideal for beginners and casual users
+
+### 2. Command-Based Mode (For Power Users)
+
+Type commands directly with arguments for faster operation:
+
+```bash
+Select an option (1-8): add "Buy groceries" "Milk, bread, eggs"
+Select an option (1-8): list
+Select an option (1-8): complete 1
+Select an option (1-8): delete 2
+```
+
+**Benefits:**
+- Faster for experienced users
+- Command aliases supported (e.g., `ls`, `rm`, `done`)
+- No multiple prompts needed
+- Direct control over all parameters
+- Ideal for power users and automation
+
+### Flexibility
+
+You can **switch between modes at any time**! Use menu numbers when you need guidance, and use direct commands when you know what you want to do. The choice is yours.
 
 ---
 
@@ -240,14 +370,17 @@ todo> delete 1
 
 ### What's Included ✅
 
+- **Menu-Driven Interface**: Numbered menu (1-8) with guided prompts
+- **Dual Input Mode**: Menu-driven for beginners, direct commands for power users
 - **Core CRUD Operations**: Create, Read, Update, Delete tasks
 - **Task Status Management**: Mark tasks as completed or pending
+- **Interactive Prompts**: Step-by-step guidance for all operations
 - **In-Memory Storage**: Fast, simple dictionary-based storage
 - **Clean Architecture**: Proper layer separation for future extensibility
-- **CLI Interface**: Interactive command-line experience
 - **Input Validation**: Comprehensive validation with helpful error messages
-- **Command Aliases**: Multiple ways to invoke commands
-- **Beautiful Formatting**: Tables and formatted output
+- **Command Aliases**: Multiple ways to invoke commands (e.g., `ls`, `list`, `all`)
+- **Beautiful Formatting**: Tables with box-drawing characters and formatted output
+- **Error Handling**: Clear, actionable error messages with usage hints
 
 ### What's NOT Included ❌
 
@@ -277,44 +410,67 @@ Phase 1 focuses on:
 
 ```
 todo-cli-phase1/
-├── README.md                          # This file
-├── CLAUDE.md                          # AI assistant documentation
+├── README.md                          # Project documentation
+├── CLAUDE.md                          # AI-assisted development documentation
 ├── specs/                             # Specification documents
 │   ├── functional_spec.md            # Functional requirements
 │   ├── architecture_spec.md          # Technical architecture
 │   └── cli_flow_spec.md              # CLI interaction flows
 │
-└── src/                              # Source code
-    ├── main.py                       # Entry point
+└── src/                              # Source code (Clean Architecture)
+    ├── __init__.py                   # Package initialization
+    ├── __main__.py                   # Module execution entry point
+    ├── main.py                       # Application entry point & composition root
     │
-    ├── domain/                       # Domain Layer
+    ├── domain/                       # Domain Layer (Business Logic)
+    │   ├── __init__.py
     │   ├── entities/
-    │   │   └── task.py              # Task entity
+    │   │   ├── __init__.py
+    │   │   └── task.py              # Task entity with business rules
     │   ├── value_objects/
-    │   │   └── task_status.py       # Status enum
-    │   └── exceptions.py             # Domain exceptions
+    │   │   ├── __init__.py
+    │   │   └── task_status.py       # TaskStatus enum (pending/completed)
+    │   └── exceptions.py             # Domain-specific exceptions
     │
-    ├── application/                  # Application Layer
+    ├── application/                  # Application Layer (Use Cases)
+    │   ├── __init__.py
     │   ├── interfaces/
-    │   │   └── task_repository.py   # Repository interface
+    │   │   ├── __init__.py
+    │   │   └── task_repository.py   # Repository interface (dependency inversion)
     │   └── use_cases/
-    │       ├── add_task.py          # Add task use case
-    │       ├── list_tasks.py        # List tasks use case
+    │       ├── __init__.py
+    │       ├── add_task.py          # Add new task use case
+    │       ├── list_tasks.py        # List all tasks use case
     │       ├── update_task.py       # Update task use case
     │       ├── delete_task.py       # Delete task use case
     │       ├── complete_task.py     # Complete task use case
-    │       └── uncomplete_task.py   # Uncomplete task use case
+    │       └── uncomplete_task.py   # Mark task as pending use case
     │
-    ├── infrastructure/               # Infrastructure Layer
+    ├── infrastructure/               # Infrastructure Layer (External concerns)
+    │   ├── __init__.py
     │   └── repositories/
-    │       └── in_memory_task_repository.py  # In-memory storage
+    │       ├── __init__.py
+    │       └── in_memory_task_repository.py  # Dictionary-based storage
     │
-    └── presentation/                 # Presentation Layer
+    └── presentation/                 # Presentation Layer (User Interface)
+        ├── __init__.py
         └── cli/
-            ├── cli.py               # CLI interface
-            ├── command_handlers.py  # Command handlers
-            └── formatters.py        # Output formatters
+            ├── __init__.py
+            ├── cli.py               # Menu-driven CLI & REPL loop
+            ├── command_handlers.py  # Command handler classes
+            └── formatters.py        # Output formatting (tables, details)
 ```
+
+### Layer Responsibilities
+
+| Layer | Purpose | Dependencies |
+|-------|---------|--------------|
+| **Domain** | Core business logic, entities, and rules | None (innermost layer) |
+| **Application** | Use cases orchestrating domain logic | Domain only |
+| **Infrastructure** | External concerns (storage, I/O) | Domain, Application interfaces |
+| **Presentation** | User interface (CLI, menu system) | Application use cases |
+
+**Note:** The architecture follows the **Dependency Rule**: outer layers depend on inner layers, never the reverse. This ensures the domain remains independent and testable.
 
 ---
 
@@ -341,6 +497,29 @@ todo-cli-phase1/
 2. **Fast**: Faster than pip
 3. **Simple**: Easy to use
 4. **Professional**: Industry best practice
+
+### Why Menu-Driven Interface?
+
+1. **Beginner-Friendly**: No need to memorize command syntax
+2. **Guided Experience**: Step-by-step prompts reduce errors
+3. **Discoverability**: All options visible at a glance
+4. **Flexibility**: Supports both menu and direct command modes
+5. **Professional**: Common pattern in enterprise CLI applications
+6. **Reduced Cognitive Load**: Users focus on tasks, not syntax
+
+### Implementation Highlights
+
+**Dual-Mode Support:**
+- Menu numbers (1-8) for guided interaction
+- Direct commands for power users
+- Command aliases for flexibility
+- Seamless switching between modes
+
+**User Experience:**
+- Clear visual menu with box-drawing characters
+- Interactive prompts for complex operations (e.g., update task)
+- Contextual help messages
+- Graceful error handling with recovery hints
 
 ---
 
@@ -369,7 +548,7 @@ todo-cli-phase1/
 
 ## Example Session
 
-Here's a complete example of using Todo CLI:
+Here's a complete example of using Todo CLI with the menu-driven interface:
 
 ```bash
 $ cd src && python3 main.py
@@ -379,10 +558,23 @@ $ cd src && python3 main.py
 ║        Your simple in-memory task manager          ║
 ╚════════════════════════════════════════════════════╝
 
-Type 'help' to see available commands.
-Type 'exit' to quit.
+══════════════════════════════════════════════════════
+MAIN MENU
+══════════════════════════════════════════════════════
+1. Add Task          - Create a new task
+2. List Tasks        - View all tasks
+3. Update Task       - Modify an existing task
+4. Delete Task       - Remove a task
+5. Complete Task     - Mark task as completed
+6. Uncomplete Task   - Mark task as pending
+7. Help              - Show detailed help
+8. Exit              - Quit the application
+══════════════════════════════════════════════════════
 
-todo> add "Buy groceries" "Milk, eggs, bread"
+Select an option (1-8): 1
+Enter task title: Buy groceries
+Enter task description (optional): Milk, eggs, bread
+
 ✓ Task created successfully!
 
   ID: 1
@@ -391,7 +583,23 @@ todo> add "Buy groceries" "Milk, eggs, bread"
   Status: pending
   Created: 2025-12-26 14:30:45
 
-todo> add "Call dentist"
+══════════════════════════════════════════════════════
+MAIN MENU
+══════════════════════════════════════════════════════
+1. Add Task          - Create a new task
+2. List Tasks        - View all tasks
+3. Update Task       - Modify an existing task
+4. Delete Task       - Remove a task
+5. Complete Task     - Mark task as completed
+6. Uncomplete Task   - Mark task as pending
+7. Help              - Show detailed help
+8. Exit              - Quit the application
+══════════════════════════════════════════════════════
+
+Select an option (1-8): 1
+Enter task title: Call dentist
+Enter task description (optional):
+
 ✓ Task created successfully!
 
   ID: 2
@@ -400,7 +608,20 @@ todo> add "Call dentist"
   Status: pending
   Created: 2025-12-26 14:31:12
 
-todo> list
+══════════════════════════════════════════════════════
+MAIN MENU
+══════════════════════════════════════════════════════
+1. Add Task          - Create a new task
+2. List Tasks        - View all tasks
+3. Update Task       - Modify an existing task
+4. Delete Task       - Remove a task
+5. Complete Task     - Mark task as completed
+6. Uncomplete Task   - Mark task as pending
+7. Help              - Show detailed help
+8. Exit              - Quit the application
+══════════════════════════════════════════════════════
+
+Select an option (1-8): 2
 
 ┌────┬────────────────────┬──────────────────────┬───────────┐
 │ ID │ Title              │ Description          │ Status    │
@@ -411,13 +632,41 @@ todo> list
 
 Total: 2 tasks (2 pending, 0 completed)
 
-todo> complete 1
+══════════════════════════════════════════════════════
+MAIN MENU
+══════════════════════════════════════════════════════
+1. Add Task          - Create a new task
+2. List Tasks        - View all tasks
+3. Update Task       - Modify an existing task
+4. Delete Task       - Remove a task
+5. Complete Task     - Mark task as completed
+6. Uncomplete Task   - Mark task as pending
+7. Help              - Show detailed help
+8. Exit              - Quit the application
+══════════════════════════════════════════════════════
+
+Select an option (1-8): 5
+Enter task ID: 1
+
 ✓ Task 1 marked as completed!
 
   Title: Buy groceries
   Status: completed
 
-todo> exit
+══════════════════════════════════════════════════════
+MAIN MENU
+══════════════════════════════════════════════════════
+1. Add Task          - Create a new task
+2. List Tasks        - View all tasks
+3. Update Task       - Modify an existing task
+4. Delete Task       - Remove a task
+5. Complete Task     - Mark task as completed
+6. Uncomplete Task   - Mark task as pending
+7. Help              - Show detailed help
+8. Exit              - Quit the application
+══════════════════════════════════════════════════════
+
+Select an option (1-8): 8
 
 ╔════════════════════════════════════════════════════╗
 ║          Thanks for using Todo CLI!                ║
@@ -431,30 +680,51 @@ Goodbye!
 
 ## Error Handling Examples
 
-The application provides helpful error messages:
+The application provides helpful error messages with clear guidance:
 
 ```bash
-# Missing title
-todo> add
+# Empty task title (menu-driven)
+Select an option (1-8): 1
+Enter task title:
+Enter task description (optional): Test
+
 ✗ Error: Title is required
   Use: add <title> [description]
 
-# Invalid task ID
-todo> delete abc
+# Invalid task ID (menu-driven)
+Select an option (1-8): 4
+Enter task ID: abc
+
 ✗ Error: Invalid task ID 'abc'
   Task ID must be a number
 
 # Task not found
-todo> update 999 --title "New"
+Select an option (1-8): 3
+Enter task ID: 999
+
 ✗ Error: Task with ID 999 not found
   Use 'list' to see available tasks
 
-# Unknown command
-todo> invalidcommand
+# Unknown command (power user mode)
+Select an option (1-8): invalidcommand
+
 ✗ Error: Unknown command 'invalidcommand'
 
 Available commands: add, complete, delete, help, list, uncomplete, update
 Type 'help' for more information
+
+# Missing update fields (menu-driven)
+Select an option (1-8): 3
+Enter task ID: 1
+
+What would you like to update?
+1. Title only
+2. Description only
+3. Both title and description
+Select option (1-3): 1
+Enter new title:
+
+✗ Error: Title cannot be empty when updating
 ```
 
 ---
