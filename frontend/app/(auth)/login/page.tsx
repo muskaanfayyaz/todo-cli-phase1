@@ -7,15 +7,17 @@
  * Uses Better Auth for JWT token generation.
  */
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState, Suspense } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { signIn } from "@/lib/auth";
 import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
 
-export default function LoginPage() {
+function LoginForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const redirectUrl = searchParams.get("redirect") || "/tasks";
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -30,11 +32,10 @@ export default function LoginPage() {
       // Sign in with Better Auth
       await signIn({ email, password });
 
-      // Redirect to tasks page on success
-      router.push("/tasks");
+      // Force a hard navigation to ensure session cookies are picked up
+      window.location.href = redirectUrl;
     } catch (err) {
       setError(err instanceof Error ? err.message : "Login failed");
-    } finally {
       setLoading(false);
     }
   };
@@ -147,5 +148,13 @@ export default function LoginPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading...</div>}>
+      <LoginForm />
+    </Suspense>
   );
 }

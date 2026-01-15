@@ -38,11 +38,10 @@ export default function RegisterPage() {
       // Sign up with Better Auth
       await signUp({ email, password, name: name || undefined });
 
-      // Redirect to tasks page on success
-      router.push("/tasks");
+      // Force a hard navigation to ensure session cookies are picked up
+      window.location.href = "/tasks";
     } catch (err) {
       setError(err instanceof Error ? err.message : "Registration failed");
-    } finally {
       setLoading(false);
     }
   };
