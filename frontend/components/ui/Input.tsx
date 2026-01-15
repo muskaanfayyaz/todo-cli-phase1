@@ -1,10 +1,11 @@
 /**
- * Input Component
+ * Premium Input Component
  *
- * Premium input field with focus states and error handling.
+ * World-class input field with refined focus states and premium styling.
+ * Features beautiful focus glow, smooth transitions, and accessible labels.
  */
 
-import { InputHTMLAttributes, forwardRef } from 'react';
+import { InputHTMLAttributes, forwardRef, useId } from 'react';
 import { cn } from '@/lib/utils';
 
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
@@ -14,6 +15,7 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   fullWidth?: boolean;
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
+  size?: 'sm' | 'md' | 'lg';
 }
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
@@ -27,87 +29,169 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
       leftIcon,
       rightIcon,
       disabled,
+      size = 'md',
+      id,
       ...props
     },
     ref
   ) => {
+    const generatedId = useId();
+    const inputId = id || generatedId;
+
+    const sizes = {
+      sm: {
+        input: 'h-8 px-3 text-sm',
+        icon: 'h-4 w-4',
+        label: 'text-xs',
+        helper: 'text-xs',
+      },
+      md: {
+        input: 'h-10 px-3.5 text-sm',
+        icon: 'h-4 w-4',
+        label: 'text-sm',
+        helper: 'text-xs',
+      },
+      lg: {
+        input: 'h-12 px-4 text-base',
+        icon: 'h-5 w-5',
+        label: 'text-sm',
+        helper: 'text-sm',
+      },
+    };
+
+    const currentSize = sizes[size];
+
     const baseStyles = [
-      'block px-4 py-2.5 text-base',
-      'bg-white border rounded-lg',
+      'block w-full',
+      'bg-white',
+      'border rounded-lg',
       'text-neutral-900 placeholder:text-neutral-400',
-      'transition-all duration-200',
-      'focus:outline-none focus:ring-2 focus:ring-offset-0',
-      'disabled:bg-neutral-50 disabled:cursor-not-allowed disabled:opacity-60',
-      // Enhanced focus effect
-      'focus:shadow-lg',
-      'transform-gpu',
+      // Smooth transitions
+      'transition-all duration-150 ease-out',
+      // Focus state
+      'focus:outline-none',
+      // Disabled state
+      'disabled:bg-neutral-50 disabled:text-neutral-500 disabled:cursor-not-allowed disabled:opacity-60',
+      // Shadow
+      'shadow-xs',
     ];
 
     const stateStyles = error
       ? [
           'border-danger-300',
-          'focus:border-danger-500 focus:ring-danger-500/20',
+          'focus:border-danger-500',
+          'focus:ring-4 focus:ring-danger-500/10',
         ]
       : [
-          'border-neutral-300',
-          'hover:border-neutral-400',
-          'focus:border-primary-500 focus:ring-primary-500/20',
+          'border-neutral-200',
+          'hover:border-neutral-300',
+          'focus:border-primary-500',
+          'focus:ring-4 focus:ring-primary-500/10',
+          // Subtle shadow on focus
+          'focus:shadow-sm',
         ];
-
-    const widthClass = fullWidth ? 'w-full' : '';
 
     const inputElement = (
       <div className="relative">
+        {/* Left Icon */}
         {leftIcon && (
-          <div className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400">
+          <div
+            className={cn(
+              'absolute left-3 top-1/2 -translate-y-1/2',
+              'text-neutral-400 pointer-events-none',
+              'transition-colors duration-150',
+              currentSize.icon
+            )}
+          >
             {leftIcon}
           </div>
         )}
+
+        {/* Input */}
         <input
           ref={ref}
+          id={inputId}
           className={cn(
-            ...baseStyles,
-            ...stateStyles,
+            baseStyles,
+            stateStyles,
+            currentSize.input,
             leftIcon && 'pl-10',
             rightIcon && 'pr-10',
-            widthClass,
             className
           )}
           disabled={disabled}
+          aria-invalid={!!error}
+          aria-describedby={
+            error ? `${inputId}-error` : helperText ? `${inputId}-helper` : undefined
+          }
           {...props}
         />
+
+        {/* Right Icon */}
         {rightIcon && (
-          <div className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400">
+          <div
+            className={cn(
+              'absolute right-3 top-1/2 -translate-y-1/2',
+              'text-neutral-400',
+              'transition-colors duration-150',
+              currentSize.icon
+            )}
+          >
             {rightIcon}
           </div>
         )}
       </div>
     );
 
+    // Simple input without wrapper
     if (!label && !error && !helperText) {
       return inputElement;
     }
 
+    // Full input with label and helper text
     return (
       <div className={cn('space-y-1.5', fullWidth && 'w-full')}>
+        {/* Label */}
         {label && (
           <label
+            htmlFor={inputId}
             className={cn(
-              'block text-sm font-medium',
-              error ? 'text-danger-700' : 'text-neutral-700'
+              'block font-medium',
+              currentSize.label,
+              error ? 'text-danger-700' : 'text-neutral-700',
+              disabled && 'opacity-60'
             )}
           >
             {label}
           </label>
         )}
+
+        {/* Input */}
         {inputElement}
+
+        {/* Helper Text or Error */}
         {(error || helperText) && (
           <p
+            id={error ? `${inputId}-error` : `${inputId}-helper`}
             className={cn(
-              'text-sm',
+              currentSize.helper,
+              'flex items-center gap-1',
               error ? 'text-danger-600' : 'text-neutral-500'
             )}
           >
+            {error && (
+              <svg
+                className="h-3.5 w-3.5 shrink-0"
+                viewBox="0 0 16 16"
+                fill="currentColor"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M8 15A7 7 0 108 1a7 7 0 000 14zm0-2a5 5 0 100-10 5 5 0 000 10zm0-9a1 1 0 011 1v3a1 1 0 01-2 0V5a1 1 0 011-1zm0 8a1 1 0 100-2 1 1 0 000 2z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            )}
             {error || helperText}
           </p>
         )}
@@ -119,3 +203,120 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
 Input.displayName = 'Input';
 
 export default Input;
+
+// Textarea Component
+export interface TextareaProps
+  extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
+  label?: string;
+  error?: string;
+  helperText?: string;
+  fullWidth?: boolean;
+}
+
+export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
+  (
+    {
+      className,
+      label,
+      error,
+      helperText,
+      fullWidth = false,
+      disabled,
+      id,
+      ...props
+    },
+    ref
+  ) => {
+    const generatedId = useId();
+    const textareaId = id || generatedId;
+
+    const baseStyles = [
+      'block w-full',
+      'bg-white',
+      'border rounded-lg',
+      'px-3.5 py-2.5 text-sm',
+      'text-neutral-900 placeholder:text-neutral-400',
+      'transition-all duration-150 ease-out',
+      'focus:outline-none',
+      'disabled:bg-neutral-50 disabled:text-neutral-500 disabled:cursor-not-allowed disabled:opacity-60',
+      'shadow-xs',
+      'resize-y min-h-[80px]',
+    ];
+
+    const stateStyles = error
+      ? [
+          'border-danger-300',
+          'focus:border-danger-500',
+          'focus:ring-4 focus:ring-danger-500/10',
+        ]
+      : [
+          'border-neutral-200',
+          'hover:border-neutral-300',
+          'focus:border-primary-500',
+          'focus:ring-4 focus:ring-primary-500/10',
+          'focus:shadow-sm',
+        ];
+
+    const textareaElement = (
+      <textarea
+        ref={ref}
+        id={textareaId}
+        className={cn(baseStyles, stateStyles, className)}
+        disabled={disabled}
+        aria-invalid={!!error}
+        aria-describedby={
+          error ? `${textareaId}-error` : helperText ? `${textareaId}-helper` : undefined
+        }
+        {...props}
+      />
+    );
+
+    if (!label && !error && !helperText) {
+      return textareaElement;
+    }
+
+    return (
+      <div className={cn('space-y-1.5', fullWidth && 'w-full')}>
+        {label && (
+          <label
+            htmlFor={textareaId}
+            className={cn(
+              'block text-sm font-medium',
+              error ? 'text-danger-700' : 'text-neutral-700',
+              disabled && 'opacity-60'
+            )}
+          >
+            {label}
+          </label>
+        )}
+        {textareaElement}
+        {(error || helperText) && (
+          <p
+            id={error ? `${textareaId}-error` : `${textareaId}-helper`}
+            className={cn(
+              'text-xs flex items-center gap-1',
+              error ? 'text-danger-600' : 'text-neutral-500'
+            )}
+          >
+            {error && (
+              <svg
+                className="h-3.5 w-3.5 shrink-0"
+                viewBox="0 0 16 16"
+                fill="currentColor"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M8 15A7 7 0 108 1a7 7 0 000 14zm0-2a5 5 0 100-10 5 5 0 000 10zm0-9a1 1 0 011 1v3a1 1 0 01-2 0V5a1 1 0 011-1zm0 8a1 1 0 100-2 1 1 0 000 2z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            )}
+            {error || helperText}
+          </p>
+        )}
+      </div>
+    );
+  }
+);
+
+Textarea.displayName = 'Textarea';

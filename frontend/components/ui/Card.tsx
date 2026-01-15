@@ -1,39 +1,59 @@
 /**
- * Card Component
+ * Premium Card Component
  *
- * Flexible container component with variants for different elevations.
+ * World-class card component with refined elevation and hover states.
+ * Features smooth transitions and beautiful shadows for premium feel.
  */
 
 import { HTMLAttributes, forwardRef } from 'react';
 import { cn } from '@/lib/utils';
 
 export interface CardProps extends HTMLAttributes<HTMLDivElement> {
-  variant?: 'flat' | 'elevated' | 'outlined';
-  padding?: 'none' | 'sm' | 'md' | 'lg';
+  variant?: 'default' | 'elevated' | 'outlined' | 'ghost';
+  padding?: 'none' | 'sm' | 'md' | 'lg' | 'xl';
   hover?: boolean;
+  interactive?: boolean;
+  glow?: boolean;
 }
 
 const Card = forwardRef<HTMLDivElement, CardProps>(
   (
     {
       className,
-      variant = 'elevated',
+      variant = 'default',
       padding = 'md',
       hover = false,
+      interactive = false,
+      glow = false,
       children,
       ...props
     },
     ref
   ) => {
     const baseStyles = [
-      'bg-white rounded-lg',
-      'transition-all duration-200',
+      'bg-white rounded-xl',
+      'transition-all duration-200 ease-out',
+      'transform-gpu',
     ];
 
     const variants = {
-      flat: 'shadow-none',
-      elevated: 'shadow-sm',
-      outlined: 'border border-neutral-200',
+      default: [
+        'border border-neutral-200/80',
+        'shadow-[0_1px_2px_0_rgba(0,0,0,0.03)]',
+      ],
+      elevated: [
+        'border border-neutral-100',
+        'shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05),0_2px_4px_-2px_rgba(0,0,0,0.03)]',
+      ],
+      outlined: [
+        'border border-neutral-200',
+        'shadow-none',
+      ],
+      ghost: [
+        'border border-transparent',
+        'shadow-none',
+        'bg-transparent',
+      ],
     };
 
     const paddings = {
@@ -41,14 +61,29 @@ const Card = forwardRef<HTMLDivElement, CardProps>(
       sm: 'p-4',
       md: 'p-6',
       lg: 'p-8',
+      xl: 'p-10',
     };
 
-    const hoverStyles = hover
+    const hoverStyles = hover || interactive
+      ? [
+          'hover:border-neutral-300',
+          variant === 'elevated' && 'hover:shadow-[0_12px_24px_-4px_rgba(0,0,0,0.08),0_4px_8px_-2px_rgba(0,0,0,0.03)]',
+          variant === 'default' && 'hover:shadow-[0_4px_8px_-2px_rgba(0,0,0,0.06),0_2px_4px_-2px_rgba(0,0,0,0.03)]',
+          'hover:-translate-y-0.5',
+        ]
+      : [];
+
+    const interactiveStyles = interactive
       ? [
           'cursor-pointer',
-          variant === 'elevated' && 'hover:shadow-md',
-          variant === 'outlined' && 'hover:border-neutral-300',
-          'hover:-translate-y-0.5',
+          'active:translate-y-0',
+          'active:shadow-[0_1px_2px_0_rgba(0,0,0,0.03)]',
+        ]
+      : [];
+
+    const glowStyles = glow
+      ? [
+          'hover:shadow-[0_12px_24px_-4px_rgba(0,0,0,0.08),0_0_20px_rgba(97,114,243,0.1)]',
         ]
       : [];
 
@@ -56,10 +91,12 @@ const Card = forwardRef<HTMLDivElement, CardProps>(
       <div
         ref={ref}
         className={cn(
-          ...baseStyles,
+          baseStyles,
           variants[variant],
           paddings[padding],
-          ...hoverStyles,
+          hoverStyles,
+          interactiveStyles,
+          glowStyles,
           className
         )}
         {...props}
@@ -72,27 +109,32 @@ const Card = forwardRef<HTMLDivElement, CardProps>(
 
 Card.displayName = 'Card';
 
-// Subcomponents for semantic structure
+// Card Header
 export const CardHeader = forwardRef<
   HTMLDivElement,
-  HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
+  HTMLAttributes<HTMLDivElement> & { noBorder?: boolean }
+>(({ className, noBorder = true, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn('mb-4', className)}
+    className={cn(
+      'flex flex-col space-y-1.5',
+      !noBorder && 'pb-4 border-b border-neutral-100',
+      className
+    )}
     {...props}
   />
 ));
 CardHeader.displayName = 'CardHeader';
 
+// Card Title
 export const CardTitle = forwardRef<
   HTMLHeadingElement,
-  HTMLAttributes<HTMLHeadingElement>
->(({ className, ...props }, ref) => (
-  <h3
+  HTMLAttributes<HTMLHeadingElement> & { as?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' }
+>(({ className, as: Component = 'h3', ...props }, ref) => (
+  <Component
     ref={ref}
     className={cn(
-      'text-lg font-semibold text-neutral-900',
+      'text-lg font-semibold text-neutral-900 tracking-tight',
       className
     )}
     {...props}
@@ -100,43 +142,153 @@ export const CardTitle = forwardRef<
 ));
 CardTitle.displayName = 'CardTitle';
 
+// Card Description
 export const CardDescription = forwardRef<
   HTMLParagraphElement,
   HTMLAttributes<HTMLParagraphElement>
 >(({ className, ...props }, ref) => (
   <p
     ref={ref}
-    className={cn(
-      'text-sm text-neutral-600 mt-1',
-      className
-    )}
+    className={cn('text-sm text-neutral-500', className)}
     {...props}
   />
 ));
 CardDescription.displayName = 'CardDescription';
 
+// Card Content
 export const CardContent = forwardRef<
   HTMLDivElement,
   HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => (
-  <div
-    ref={ref}
-    className={cn('', className)}
-    {...props}
-  />
+  <div ref={ref} className={cn('', className)} {...props} />
 ));
 CardContent.displayName = 'CardContent';
 
+// Card Footer
 export const CardFooter = forwardRef<
   HTMLDivElement,
-  HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
+  HTMLAttributes<HTMLDivElement> & { noBorder?: boolean }
+>(({ className, noBorder = true, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn('mt-4 flex items-center gap-2', className)}
+    className={cn(
+      'flex items-center gap-3',
+      !noBorder && 'pt-4 mt-4 border-t border-neutral-100',
+      className
+    )}
     {...props}
   />
 ));
 CardFooter.displayName = 'CardFooter';
 
 export default Card;
+
+// Stat Card - A specialized card for displaying statistics
+export interface StatCardProps extends HTMLAttributes<HTMLDivElement> {
+  label: string;
+  value: string | number;
+  icon?: React.ReactNode;
+  trend?: {
+    value: number;
+    isPositive: boolean;
+  };
+  variant?: 'default' | 'primary' | 'success' | 'warning' | 'danger';
+}
+
+export const StatCard = forwardRef<HTMLDivElement, StatCardProps>(
+  ({ label, value, icon, trend, variant = 'default', className, ...props }, ref) => {
+    const variantStyles = {
+      default: {
+        bg: 'bg-neutral-50',
+        border: 'border-neutral-200',
+        icon: 'text-neutral-400',
+        value: 'text-neutral-900',
+      },
+      primary: {
+        bg: 'bg-primary-50',
+        border: 'border-primary-100',
+        icon: 'text-primary-500',
+        value: 'text-primary-900',
+      },
+      success: {
+        bg: 'bg-success-50',
+        border: 'border-success-100',
+        icon: 'text-success-500',
+        value: 'text-success-900',
+      },
+      warning: {
+        bg: 'bg-warning-50',
+        border: 'border-warning-100',
+        icon: 'text-warning-500',
+        value: 'text-warning-900',
+      },
+      danger: {
+        bg: 'bg-danger-50',
+        border: 'border-danger-100',
+        icon: 'text-danger-500',
+        value: 'text-danger-900',
+      },
+    };
+
+    const styles = variantStyles[variant];
+
+    return (
+      <div
+        ref={ref}
+        className={cn(
+          'rounded-xl p-4 border transition-all duration-200',
+          styles.bg,
+          styles.border,
+          'hover:shadow-sm',
+          className
+        )}
+        {...props}
+      >
+        <div className="flex items-start justify-between">
+          <div>
+            <p className="text-xs font-medium text-neutral-500 uppercase tracking-wider mb-1">
+              {label}
+            </p>
+            <p className={cn('text-2xl font-bold tracking-tight', styles.value)}>
+              {value}
+            </p>
+            {trend && (
+              <div className="flex items-center gap-1 mt-1">
+                <span
+                  className={cn(
+                    'text-xs font-medium',
+                    trend.isPositive ? 'text-success-600' : 'text-danger-600'
+                  )}
+                >
+                  {trend.isPositive ? '+' : ''}{trend.value}%
+                </span>
+                <svg
+                  className={cn(
+                    'w-3 h-3',
+                    trend.isPositive ? 'text-success-600' : 'text-danger-600 rotate-180'
+                  )}
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M5 10l7-7m0 0l7 7m-7-7v18"
+                  />
+                </svg>
+              </div>
+            )}
+          </div>
+          {icon && (
+            <div className={cn('p-2 rounded-lg', styles.bg, styles.icon)}>
+              {icon}
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  }
+);
+StatCard.displayName = 'StatCard';

@@ -1,18 +1,19 @@
 /**
- * UI Components Index
+ * Premium UI Components Index
  *
  * Central export point for all design system components.
+ * World-class components inspired by Linear, Stripe, Vercel.
  */
 
-export { default as Button } from './Button';
-export type { ButtonProps } from './Button';
+// Button
+export { default as Button, IconButton } from './Button';
+export type { ButtonProps, IconButtonProps } from './Button';
 
-export { default as Input } from './Input';
-export type { InputProps } from './Input';
+// Input & Textarea
+export { default as Input, Textarea } from './Input';
+export type { InputProps, TextareaProps } from './Input';
 
-export { default as Textarea } from './Textarea';
-export type { TextareaProps } from './Textarea';
-
+// Card & Variants
 export {
   default as Card,
   CardHeader,
@@ -20,9 +21,11 @@ export {
   CardDescription,
   CardContent,
   CardFooter,
+  StatCard,
 } from './Card';
-export type { CardProps } from './Card';
+export type { CardProps, StatCardProps } from './Card';
 
+// State Components
 export { default as EmptyState } from './EmptyState';
 export { default as LoadingState } from './LoadingState';
 export { default as ErrorState } from './ErrorState';
