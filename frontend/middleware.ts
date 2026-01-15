@@ -37,8 +37,11 @@ const PUBLIC_AUTH_ROUTES = ["/login", "/register"];
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Get JWT token from cookies (Better Auth stores it here)
-  const token = request.cookies.get("better-auth.session_token")?.value;
+  // Get session token from cookies (Better Auth may use different cookie names)
+  const token =
+    request.cookies.get("better-auth.session_token")?.value ||
+    request.cookies.get("__Secure-better-auth.session_token")?.value ||
+    request.cookies.get("better-auth.session")?.value;
 
   // Check if current route is protected
   const isProtectedRoute = PROTECTED_ROUTES.some((route) =>
