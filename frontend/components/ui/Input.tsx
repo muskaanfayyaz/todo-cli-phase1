@@ -211,6 +211,8 @@ export interface TextareaProps
   error?: string;
   helperText?: string;
   fullWidth?: boolean;
+  showCount?: boolean;
+  autoResize?: boolean;
 }
 
 export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
@@ -221,14 +223,29 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
       error,
       helperText,
       fullWidth = false,
+      showCount = false,
+      autoResize = false,
       disabled,
       id,
+      value,
+      maxLength,
+      onChange,
       ...props
     },
     ref
   ) => {
     const generatedId = useId();
     const textareaId = id || generatedId;
+    const currentLength = typeof value === 'string' ? value.length : 0;
+
+    // Handle auto-resize
+    const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+      if (autoResize) {
+        e.target.style.height = 'auto';
+        e.target.style.height = `${e.target.scrollHeight}px`;
+      }
+      onChange?.(e);
+    };
 
     const baseStyles = [
       'block w-full',
@@ -240,7 +257,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
       'focus:outline-none',
       'disabled:bg-neutral-50 disabled:text-neutral-500 disabled:cursor-not-allowed disabled:opacity-60',
       'shadow-xs',
-      'resize-y min-h-[80px]',
+      autoResize ? 'resize-none overflow-hidden min-h-[80px]' : 'resize-y min-h-[80px]',
     ];
 
     const stateStyles = error
@@ -258,17 +275,27 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
         ];
 
     const textareaElement = (
-      <textarea
-        ref={ref}
-        id={textareaId}
-        className={cn(baseStyles, stateStyles, className)}
-        disabled={disabled}
-        aria-invalid={!!error}
-        aria-describedby={
-          error ? `${textareaId}-error` : helperText ? `${textareaId}-helper` : undefined
-        }
-        {...props}
-      />
+      <div className="relative">
+        <textarea
+          ref={ref}
+          id={textareaId}
+          className={cn(baseStyles, stateStyles, showCount && 'pb-6', className)}
+          disabled={disabled}
+          value={value}
+          maxLength={maxLength}
+          onChange={handleChange}
+          aria-invalid={!!error}
+          aria-describedby={
+            error ? `${textareaId}-error` : helperText ? `${textareaId}-helper` : undefined
+          }
+          {...props}
+        />
+        {showCount && maxLength && (
+          <span className="absolute bottom-2 right-3 text-xs text-neutral-400 pointer-events-none">
+            {currentLength}/{maxLength}
+          </span>
+        )}
+      </div>
     );
 
     if (!label && !error && !helperText) {
