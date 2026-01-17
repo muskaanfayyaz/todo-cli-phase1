@@ -8,20 +8,41 @@
 @tailwind utilities;
 
 /* ============================================
-   CSS VARIABLES
+   CSS VARIABLES - LIGHT THEME (Default)
    ============================================ */
-:root {
+:root,
+.light {
   /* Font */
   --font-inter: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
 
-  /* Colors */
+  /* Theme Colors */
   --color-background: #ffffff;
   --color-background-secondary: #f9fafb;
+  --color-background-tertiary: #f3f4f6;
   --color-surface: #ffffff;
+  --color-surface-elevated: #ffffff;
   --color-border: #e5e7eb;
   --color-border-hover: #d1d5db;
+  --color-border-subtle: #f3f4f6;
+
+  /* Text Colors */
+  --color-text-primary: #111827;
+  --color-text-secondary: #4b5563;
+  --color-text-tertiary: #6b7280;
+  --color-text-muted: #9ca3af;
+  --color-text-inverted: #ffffff;
+
+  /* Primary Brand */
   --color-primary: #6172f3;
   --color-primary-hover: #444ce7;
+  --color-primary-active: #3538cd;
+  --color-primary-light: #eef2ff;
+  --color-primary-text: #ffffff;
+
+  /* Accent (Violet) */
+  --color-accent: #8b5cf6;
+  --color-accent-hover: #7c3aed;
+  --color-accent-light: #ede9fe;
 
   /* Spacing */
   --spacing-page-x: 1.5rem;
@@ -39,14 +60,68 @@
   --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.03);
   --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.04), 0 1px 2px -1px rgba(0, 0, 0, 0.02);
   --shadow-md: 0 4px 8px -2px rgba(0, 0, 0, 0.06), 0 2px 4px -2px rgba(0, 0, 0, 0.03);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.06), 0 4px 6px -4px rgba(0, 0, 0, 0.03);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.04);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
   --shadow-ring: 0 0 0 3px rgba(97, 114, 243, 0.12);
+  --shadow-glow: 0 0 20px rgba(97, 114, 243, 0.15);
 
   /* Border radius */
   --radius-sm: 0.25rem;
   --radius-md: 0.5rem;
   --radius-lg: 0.75rem;
   --radius-xl: 1rem;
+  --radius-2xl: 1.25rem;
+
+  /* Header */
+  --header-bg: rgba(255, 255, 255, 0.8);
+  --header-border: rgba(0, 0, 0, 0.05);
+}
+
+/* ============================================
+   CSS VARIABLES - DARK THEME
+   ============================================ */
+.dark {
+  /* Theme Colors */
+  --color-background: #0a0a0b;
+  --color-background-secondary: #111113;
+  --color-background-tertiary: #18181b;
+  --color-surface: #18181b;
+  --color-surface-elevated: #1f1f23;
+  --color-border: #27272a;
+  --color-border-hover: #3f3f46;
+  --color-border-subtle: #1f1f23;
+
+  /* Text Colors */
+  --color-text-primary: #fafafa;
+  --color-text-secondary: #a1a1aa;
+  --color-text-tertiary: #71717a;
+  --color-text-muted: #52525b;
+  --color-text-inverted: #09090b;
+
+  /* Primary Brand (adjusted for dark) */
+  --color-primary: #818cf8;
+  --color-primary-hover: #6366f1;
+  --color-primary-active: #4f46e5;
+  --color-primary-light: rgba(99, 102, 241, 0.15);
+  --color-primary-text: #ffffff;
+
+  /* Accent (Violet - adjusted for dark) */
+  --color-accent: #a78bfa;
+  --color-accent-hover: #8b5cf6;
+  --color-accent-light: rgba(139, 92, 246, 0.15);
+
+  /* Shadows (darker, more subtle) */
+  --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.4), 0 1px 2px -1px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 8px -2px rgba(0, 0, 0, 0.5), 0 2px 4px -2px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -4px rgba(0, 0, 0, 0.4);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.6), 0 8px 10px -6px rgba(0, 0, 0, 0.5);
+  --shadow-ring: 0 0 0 3px rgba(129, 140, 248, 0.2);
+  --shadow-glow: 0 0 30px rgba(129, 140, 248, 0.2);
+
+  /* Header */
+  --header-bg: rgba(10, 10, 11, 0.8);
+  --header-border: rgba(255, 255, 255, 0.05);
 }
 
 @media (min-width: 640px) {
@@ -66,7 +141,7 @@
    ============================================ */
 @layer base {
   * {
-    @apply border-neutral-200;
+    @apply border-neutral-200 dark:border-neutral-800;
   }
 
   *,
@@ -81,18 +156,24 @@
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
     font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+    /* Smooth theme transition */
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
 
   body {
-    @apply bg-white text-neutral-900 min-h-screen;
+    @apply min-h-screen;
+    background-color: var(--color-background);
+    color: var(--color-text-primary);
     font-family: var(--font-inter);
     font-size: 0.875rem;
     line-height: 1.5;
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
 
   /* Typography Scale */
   h1, h2, h3, h4, h5, h6 {
-    @apply font-semibold text-neutral-900 tracking-tight;
+    @apply font-semibold tracking-tight;
+    color: var(--color-text-primary);
   }
 
   h1 {

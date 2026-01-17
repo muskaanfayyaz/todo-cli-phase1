@@ -4,15 +4,89 @@
  * Premium Header Component
  *
  * World-class navigation with elegant animations and refined interactions.
- * Features glass morphism, smooth transitions, and premium visual hierarchy.
+ * Features glass morphism, smooth transitions, theme toggle, and premium visual hierarchy.
  */
 
 import { useState, useEffect, useCallback } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import {
+  Menu,
+  X,
+  LayoutDashboard,
+  CheckSquare,
+  Sparkles,
+  Calendar,
+  Settings,
+  Home,
+  LogIn,
+  LogOut,
+  User,
+  Shield,
+} from "lucide-react";
 import { authClient, getSession } from "@/lib/auth";
+import { ThemeToggle } from "@/components/theme";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui";
+
+// Navigation item type
+interface NavItem {
+  href: string;
+  label: string;
+  icon: React.ReactNode;
+  isAnchor?: boolean;
+  authRequired?: boolean;
+}
+
+// Public navigation links
+const publicLinks: NavItem[] = [
+  {
+    href: "/",
+    label: "Home",
+    icon: <Home className="w-4 h-4" />,
+  },
+  {
+    href: "/#features",
+    label: "Features",
+    isAnchor: true,
+    icon: <Sparkles className="w-4 h-4" />,
+  },
+];
+
+// Protected navigation links (shown when authenticated)
+const protectedLinks: NavItem[] = [
+  {
+    href: "/dashboard",
+    label: "Dashboard",
+    icon: <LayoutDashboard className="w-4 h-4" />,
+    authRequired: true,
+  },
+  {
+    href: "/tasks",
+    label: "Tasks",
+    icon: <CheckSquare className="w-4 h-4" />,
+    authRequired: true,
+  },
+  {
+    href: "/insights",
+    label: "AI Insights",
+    icon: <Sparkles className="w-4 h-4" />,
+    authRequired: true,
+  },
+  {
+    href: "/planner",
+    label: "Planner",
+    icon: <Calendar className="w-4 h-4" />,
+    authRequired: true,
+  },
+  {
+    href: "/settings",
+    label: "Settings",
+    icon: <Settings className="w-4 h-4" />,
+    authRequired: true,
+  },
+];
 
 export default function Header() {
   const pathname = usePathname();
@@ -23,6 +97,11 @@ export default function Header() {
   const [userName, setUserName] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [loggingOut, setLoggingOut] = useState(false);
+
+  // Determine which links to show
+  const navLinks = isAuthenticated
+    ? [...publicLinks.slice(0, 1), ...protectedLinks] // Home + protected links
+    : publicLinks;
 
   // Check authentication status
   useEffect(() => {
@@ -65,6 +144,18 @@ export default function Header() {
     setMobileMenuOpen(false);
   }, [pathname]);
 
+  // Close mobile menu on escape key
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && mobileMenuOpen) {
+        setMobileMenuOpen(false);
+      }
+    };
+
+    document.addEventListener("keydown", handleEscape);
+    return () => document.removeEventListener("keydown", handleEscape);
+  }, [mobileMenuOpen]);
+
   // Lock body scroll when mobile menu is open
   useEffect(() => {
     if (mobileMenuOpen) {
@@ -92,61 +183,21 @@ export default function Header() {
     }
   }, [router]);
 
-  // Navigation links
-  type NavLink = {
-    href: string;
-    label: string;
-    isAnchor?: boolean;
-    icon?: React.ReactNode;
-  };
-
-  const publicLinks: NavLink[] = [
-    {
-      href: "/",
-      label: "Home",
-      icon: (
-        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-          <path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-        </svg>
-      ),
-    },
-    {
-      href: "/#features",
-      label: "Features",
-      isAnchor: true,
-      icon: (
-        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-          <path strokeLinecap="round" strokeLinejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
-        </svg>
-      ),
-    },
-  ];
-
-  const protectedLinks: NavLink[] = isAuthenticated
-    ? [
-        {
-          href: "/tasks",
-          label: "My Tasks",
-          icon: (
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
-            </svg>
-          ),
-        },
-      ]
-    : [];
-
-  const allLinks: NavLink[] = [...publicLinks, ...protectedLinks];
-
   // Check if link is active
   function isActiveLink(href: string): boolean {
-    if (href === "/") {
-      return pathname === "/";
+    if (href === "/" && pathname === "/") {
+      return true;
+    }
+    if (href === "/dashboard" && pathname === "/") {
+      return false;
     }
     if (href.startsWith("/#")) {
       return false;
     }
-    return pathname.startsWith(href);
+    if (href !== "/" && pathname.startsWith(href)) {
+      return true;
+    }
+    return false;
   }
 
   // Get user initials for avatar
@@ -163,61 +214,58 @@ export default function Header() {
     <>
       <header
         className={cn(
-          "fixed top-0 left-0 right-0 z-header transition-all duration-300",
+          "fixed top-0 left-0 right-0 z-50",
+          "transition-all duration-300 ease-out",
           scrolled
-            ? "bg-white/80 backdrop-blur-xl shadow-sm border-b border-neutral-200/50"
-            : "bg-white/0"
+            ? "bg-white/80 dark:bg-neutral-900/80 backdrop-blur-xl shadow-sm border-b border-neutral-200/50 dark:border-neutral-800/50"
+            : "bg-transparent"
         )}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16 lg:h-18">
+          <div className="flex justify-between items-center h-16 lg:h-[72px]">
             {/* Logo */}
             <Link href="/" className="flex items-center gap-2.5 group">
-              <div className="relative">
-                <div className="w-9 h-9 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center shadow-lg shadow-primary-500/25 group-hover:shadow-xl group-hover:shadow-primary-500/30 transition-all duration-300 group-hover:scale-105">
-                  <svg
-                    className="w-5 h-5 text-white"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"
-                    />
-                  </svg>
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="relative"
+              >
+                <div className="w-9 h-9 bg-gradient-to-br from-primary-500 to-violet-600 rounded-xl flex items-center justify-center shadow-lg shadow-primary-500/25 group-hover:shadow-xl group-hover:shadow-primary-500/30 transition-all duration-300">
+                  <CheckSquare className="w-5 h-5 text-white" />
                 </div>
-                {/* Glow effect on hover */}
-                <div className="absolute inset-0 bg-primary-400 rounded-xl blur-xl opacity-0 group-hover:opacity-30 transition-opacity duration-300" />
-              </div>
-              <span className="text-xl font-bold text-neutral-900 tracking-tight">
-                Todo<span className="text-primary-600">App</span>
+                {/* AI Badge */}
+                <div className="absolute -top-1 -right-1 w-3 h-3 bg-gradient-to-br from-amber-400 to-orange-500 rounded-full flex items-center justify-center ring-2 ring-white dark:ring-neutral-900">
+                  <Sparkles className="w-1.5 h-1.5 text-white" />
+                </div>
+              </motion.div>
+              <span className="text-xl font-bold text-neutral-900 dark:text-white tracking-tight">
+                Todo<span className="text-primary-600 dark:text-primary-400">AI</span>
               </span>
             </Link>
 
             {/* Desktop Navigation */}
-            <nav className="hidden md:flex items-center gap-1">
-              {allLinks.map((link) => {
+            <nav className="hidden lg:flex items-center gap-1">
+              {navLinks.map((link) => {
                 const isActive = isActiveLink(link.href);
                 const linkClasses = cn(
                   "relative px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200",
+                  "flex items-center gap-2",
                   isActive
-                    ? "text-primary-700"
-                    : "text-neutral-600 hover:text-neutral-900"
+                    ? "text-primary-700 dark:text-primary-400"
+                    : "text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 hover:bg-neutral-100 dark:hover:bg-neutral-800"
                 );
 
                 const content = (
                   <>
+                    {link.icon}
                     {link.label}
-                    {/* Active indicator */}
-                    <span
-                      className={cn(
-                        "absolute bottom-0 left-1/2 -translate-x-1/2 h-0.5 bg-primary-500 rounded-full transition-all duration-200",
-                        isActive ? "w-4" : "w-0"
-                      )}
-                    />
+                    {isActive && (
+                      <motion.div
+                        layoutId="activeNavIndicator"
+                        className="absolute inset-0 bg-primary-50 dark:bg-primary-950/30 rounded-lg -z-10"
+                        transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                      />
+                    )}
                   </>
                 );
 
@@ -233,21 +281,24 @@ export default function Header() {
               })}
             </nav>
 
-            {/* Desktop Auth Section */}
-            <div className="hidden md:flex items-center gap-3">
+            {/* Desktop Right Section */}
+            <div className="hidden lg:flex items-center gap-3">
+              {/* Theme Toggle */}
+              <ThemeToggle />
+
               {loading ? (
                 <div className="flex items-center gap-3">
-                  <div className="w-20 h-9 bg-neutral-100 rounded-lg animate-pulse" />
-                  <div className="w-24 h-9 bg-neutral-100 rounded-lg animate-pulse" />
+                  <div className="w-20 h-9 bg-neutral-100 dark:bg-neutral-800 rounded-lg animate-pulse" />
+                  <div className="w-24 h-9 bg-neutral-100 dark:bg-neutral-800 rounded-lg animate-pulse" />
                 </div>
               ) : isAuthenticated ? (
                 <div className="flex items-center gap-3">
                   {/* User Info */}
-                  <div className="flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-neutral-100/80 border border-neutral-200/60">
-                    <div className="w-7 h-7 rounded-full bg-gradient-to-br from-primary-500 to-violet-500 flex items-center justify-center text-white text-xs font-semibold shadow-sm">
+                  <div className="flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-neutral-100/80 dark:bg-neutral-800/80 border border-neutral-200/60 dark:border-neutral-700/60">
+                    <div className="w-7 h-7 rounded-full bg-gradient-to-br from-primary-500 to-violet-600 flex items-center justify-center text-white text-xs font-semibold shadow-sm">
                       {userInitials}
                     </div>
-                    <span className="text-sm font-medium text-neutral-700 max-w-[120px] truncate">
+                    <span className="text-sm font-medium text-neutral-700 dark:text-neutral-300 max-w-[120px] truncate">
                       {userName || "User"}
                     </span>
                   </div>
@@ -256,15 +307,17 @@ export default function Header() {
                     variant="ghost"
                     size="sm"
                     loading={loggingOut}
-                    className="text-neutral-600 hover:text-neutral-900"
+                    className="text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100"
                   >
+                    <LogOut className="w-4 h-4 mr-1.5" />
                     {loggingOut ? "..." : "Logout"}
                   </Button>
                 </div>
               ) : (
                 <>
                   <Link href="/login">
-                    <Button variant="ghost" size="sm" className="text-neutral-600 hover:text-neutral-900">
+                    <Button variant="ghost" size="sm" className="text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100">
+                      <LogIn className="w-4 h-4 mr-1.5" />
                       Sign in
                     </Button>
                   </Link>
@@ -280,214 +333,213 @@ export default function Header() {
               )}
             </div>
 
-            {/* Mobile Menu Button */}
-            <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className={cn(
-                "md:hidden relative w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-200",
-                mobileMenuOpen
-                  ? "bg-neutral-100 text-neutral-900"
-                  : "text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900"
-              )}
-              aria-label="Toggle menu"
-              aria-expanded={mobileMenuOpen}
-            >
-              <div className="relative w-5 h-5">
-                {/* Hamburger to X animation */}
-                <span
-                  className={cn(
-                    "absolute left-0 block w-5 h-0.5 bg-current rounded-full transition-all duration-300",
-                    mobileMenuOpen ? "top-[9px] rotate-45" : "top-1"
+            {/* Mobile Right Section */}
+            <div className="flex lg:hidden items-center gap-2">
+              <ThemeToggle />
+
+              {/* Mobile Menu Button */}
+              <motion.button
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                whileTap={{ scale: 0.9 }}
+                className={cn(
+                  "relative w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-200",
+                  mobileMenuOpen
+                    ? "bg-neutral-100 dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100"
+                    : "text-neutral-600 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100"
+                )}
+                aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+                aria-expanded={mobileMenuOpen}
+              >
+                <AnimatePresence mode="wait" initial={false}>
+                  {mobileMenuOpen ? (
+                    <motion.div
+                      key="close"
+                      initial={{ rotate: -90, opacity: 0 }}
+                      animate={{ rotate: 0, opacity: 1 }}
+                      exit={{ rotate: 90, opacity: 0 }}
+                      transition={{ duration: 0.15 }}
+                    >
+                      <X className="w-5 h-5" />
+                    </motion.div>
+                  ) : (
+                    <motion.div
+                      key="menu"
+                      initial={{ rotate: 90, opacity: 0 }}
+                      animate={{ rotate: 0, opacity: 1 }}
+                      exit={{ rotate: -90, opacity: 0 }}
+                      transition={{ duration: 0.15 }}
+                    >
+                      <Menu className="w-5 h-5" />
+                    </motion.div>
                   )}
-                />
-                <span
-                  className={cn(
-                    "absolute left-0 top-[9px] block w-5 h-0.5 bg-current rounded-full transition-all duration-300",
-                    mobileMenuOpen ? "opacity-0 scale-0" : "opacity-100 scale-100"
-                  )}
-                />
-                <span
-                  className={cn(
-                    "absolute left-0 block w-5 h-0.5 bg-current rounded-full transition-all duration-300",
-                    mobileMenuOpen ? "top-[9px] -rotate-45" : "top-[17px]"
-                  )}
-                />
-              </div>
-            </button>
+                </AnimatePresence>
+              </motion.button>
+            </div>
           </div>
         </div>
       </header>
 
       {/* Mobile Menu Overlay */}
-      <div
-        className={cn(
-          "fixed inset-0 z-modal md:hidden transition-all duration-300",
-          mobileMenuOpen ? "visible" : "invisible"
-        )}
-      >
-        {/* Backdrop */}
-        <div
-          className={cn(
-            "absolute inset-0 bg-neutral-900/60 backdrop-blur-sm transition-opacity duration-300",
-            mobileMenuOpen ? "opacity-100" : "opacity-0"
-          )}
-          onClick={() => setMobileMenuOpen(false)}
-        />
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <>
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="fixed inset-0 z-40 bg-black/20 backdrop-blur-sm lg:hidden"
+              onClick={() => setMobileMenuOpen(false)}
+              aria-hidden="true"
+            />
 
-        {/* Mobile Menu Panel */}
-        <div
-          className={cn(
-            "absolute top-0 right-0 bottom-0 w-full max-w-sm bg-white shadow-2xl transition-transform duration-300 ease-out",
-            mobileMenuOpen ? "translate-x-0" : "translate-x-full"
-          )}
-        >
-          <div className="flex flex-col h-full">
-            {/* Mobile Menu Header */}
-            <div className="flex justify-between items-center px-6 py-4 border-b border-neutral-100">
-              <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-600 rounded-lg flex items-center justify-center">
-                  <svg
-                    className="w-4 h-4 text-white"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"
-                    />
-                  </svg>
-                </div>
-                <span className="text-lg font-bold text-neutral-900">Menu</span>
-              </div>
-              <button
-                onClick={() => setMobileMenuOpen(false)}
-                className="w-9 h-9 rounded-lg flex items-center justify-center text-neutral-500 hover:text-neutral-700 hover:bg-neutral-100 transition-colors"
-                aria-label="Close menu"
-              >
-                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-            </div>
-
-            {/* User Profile (if authenticated) */}
-            {isAuthenticated && !loading && (
-              <div className="px-6 py-4 border-b border-neutral-100 bg-neutral-50/50">
-                <div className="flex items-center gap-3">
-                  <div className="w-11 h-11 rounded-full bg-gradient-to-br from-primary-500 to-violet-500 flex items-center justify-center text-white font-semibold shadow-md">
-                    {userInitials}
+            {/* Mobile Menu Panel */}
+            <motion.div
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              className={cn(
+                "fixed top-0 right-0 z-50 h-full w-full max-w-sm",
+                "bg-white dark:bg-neutral-900",
+                "shadow-2xl lg:hidden",
+                "flex flex-col"
+              )}
+            >
+              {/* Mobile Menu Header */}
+              <div className="flex justify-between items-center px-6 py-4 border-b border-neutral-100 dark:border-neutral-800">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-8 h-8 bg-gradient-to-br from-primary-500 to-violet-600 rounded-lg flex items-center justify-center">
+                    <CheckSquare className="w-4 h-4 text-white" />
                   </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="font-semibold text-neutral-900 truncate">{userName || "User"}</p>
-                    <p className="text-sm text-neutral-500">Signed in</p>
-                  </div>
+                  <span className="text-lg font-bold text-neutral-900 dark:text-white">Menu</span>
                 </div>
-              </div>
-            )}
-
-            {/* Mobile Navigation Links */}
-            <nav className="flex-1 px-4 py-4 space-y-1 overflow-y-auto">
-              {allLinks.map((link, index) => {
-                const isActive = isActiveLink(link.href);
-                const linkClasses = cn(
-                  "flex items-center gap-3 px-4 py-3.5 rounded-xl text-base font-medium transition-all duration-200",
-                  isActive
-                    ? "text-primary-700 bg-primary-50"
-                    : "text-neutral-700 hover:bg-neutral-100"
-                );
-
-                const content = (
-                  <>
-                    <span
-                      className={cn(
-                        "w-9 h-9 rounded-lg flex items-center justify-center transition-colors",
-                        isActive ? "bg-primary-100 text-primary-600" : "bg-neutral-100 text-neutral-500"
-                      )}
-                    >
-                      {link.icon}
-                    </span>
-                    <span>{link.label}</span>
-                    {isActive && (
-                      <span className="ml-auto w-2 h-2 rounded-full bg-primary-500" />
-                    )}
-                  </>
-                );
-
-                return link.isAnchor ? (
-                  <a
-                    key={link.href}
-                    href={link.href}
-                    className={linkClasses}
-                    style={{ animationDelay: `${index * 50}ms` }}
-                  >
-                    {content}
-                  </a>
-                ) : (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    className={linkClasses}
-                    style={{ animationDelay: `${index * 50}ms` }}
-                  >
-                    {content}
-                  </Link>
-                );
-              })}
-            </nav>
-
-            {/* Mobile Auth Buttons */}
-            <div className="px-4 py-4 border-t border-neutral-100 space-y-3 bg-neutral-50/30">
-              {loading ? (
-                <div className="w-full h-12 bg-neutral-100 rounded-xl animate-pulse" />
-              ) : isAuthenticated ? (
-                <Button
-                  onClick={handleLogout}
-                  variant="secondary"
-                  fullWidth
-                  size="lg"
-                  loading={loggingOut}
-                  className="justify-center"
+                <button
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="w-9 h-9 rounded-lg flex items-center justify-center text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-200 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
+                  aria-label="Close menu"
                 >
-                  <svg className="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                  </svg>
-                  {loggingOut ? "Signing out..." : "Sign out"}
-                </Button>
-              ) : (
-                <>
-                  <Link href="/register" className="block">
-                    <Button fullWidth size="lg" className="justify-center shadow-md shadow-primary-500/20">
-                      Get Started Free
-                      <svg className="w-4 h-4 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                      </svg>
-                    </Button>
-                  </Link>
-                  <Link href="/login" className="block">
-                    <Button variant="secondary" fullWidth size="lg" className="justify-center">
-                      Sign in to your account
-                    </Button>
-                  </Link>
-                </>
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              {/* User Profile (if authenticated) */}
+              {isAuthenticated && !loading && (
+                <div className="px-6 py-4 border-b border-neutral-100 dark:border-neutral-800 bg-neutral-50/50 dark:bg-neutral-800/50">
+                  <div className="flex items-center gap-3">
+                    <div className="w-11 h-11 rounded-full bg-gradient-to-br from-primary-500 to-violet-600 flex items-center justify-center text-white font-semibold shadow-md">
+                      {userInitials}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-semibold text-neutral-900 dark:text-white truncate">{userName || "User"}</p>
+                      <p className="text-sm text-neutral-500 dark:text-neutral-400">Signed in</p>
+                    </div>
+                  </div>
+                </div>
               )}
 
-              {/* Security Badge */}
-              <div className="flex items-center justify-center gap-2 pt-2 text-xs text-neutral-500">
-                <svg className="w-3.5 h-3.5 text-success-500" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                </svg>
-                <span>Secured with encryption</span>
+              {/* Mobile Navigation Links */}
+              <nav className="flex-1 px-4 py-4 space-y-1 overflow-y-auto">
+                {navLinks.map((link, index) => {
+                  const isActive = isActiveLink(link.href);
+                  const linkClasses = cn(
+                    "flex items-center gap-3 px-4 py-3.5 rounded-xl text-base font-medium transition-all duration-200",
+                    isActive
+                      ? "text-primary-700 dark:text-primary-400 bg-primary-50 dark:bg-primary-950/30"
+                      : "text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800"
+                  );
+
+                  const content = (
+                    <>
+                      <span
+                        className={cn(
+                          "w-9 h-9 rounded-lg flex items-center justify-center transition-colors",
+                          isActive
+                            ? "bg-primary-100 dark:bg-primary-900/50 text-primary-600 dark:text-primary-400"
+                            : "bg-neutral-100 dark:bg-neutral-800 text-neutral-500 dark:text-neutral-400"
+                        )}
+                      >
+                        {link.icon}
+                      </span>
+                      <span>{link.label}</span>
+                      {isActive && (
+                        <span className="ml-auto w-2 h-2 rounded-full bg-primary-500" />
+                      )}
+                    </>
+                  );
+
+                  return (
+                    <motion.div
+                      key={link.href}
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: index * 0.05 }}
+                    >
+                      {link.isAnchor ? (
+                        <a href={link.href} className={linkClasses} onClick={() => setMobileMenuOpen(false)}>
+                          {content}
+                        </a>
+                      ) : (
+                        <Link href={link.href} className={linkClasses} onClick={() => setMobileMenuOpen(false)}>
+                          {content}
+                        </Link>
+                      )}
+                    </motion.div>
+                  );
+                })}
+              </nav>
+
+              {/* Mobile Auth Buttons */}
+              <div className="px-4 py-4 border-t border-neutral-100 dark:border-neutral-800 space-y-3 bg-neutral-50/30 dark:bg-neutral-800/30">
+                {loading ? (
+                  <div className="w-full h-12 bg-neutral-100 dark:bg-neutral-800 rounded-xl animate-pulse" />
+                ) : isAuthenticated ? (
+                  <Button
+                    onClick={() => {
+                      setMobileMenuOpen(false);
+                      handleLogout();
+                    }}
+                    variant="secondary"
+                    fullWidth
+                    size="lg"
+                    loading={loggingOut}
+                    className="justify-center"
+                  >
+                    <LogOut className="w-5 h-5 mr-2" />
+                    {loggingOut ? "Signing out..." : "Sign out"}
+                  </Button>
+                ) : (
+                  <>
+                    <Link href="/register" className="block" onClick={() => setMobileMenuOpen(false)}>
+                      <Button fullWidth size="lg" className="justify-center shadow-md shadow-primary-500/20">
+                        Get Started Free
+                        <svg className="w-4 h-4 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                        </svg>
+                      </Button>
+                    </Link>
+                    <Link href="/login" className="block" onClick={() => setMobileMenuOpen(false)}>
+                      <Button variant="secondary" fullWidth size="lg" className="justify-center">
+                        Sign in to your account
+                      </Button>
+                    </Link>
+                  </>
+                )}
+
+                {/* Security Badge */}
+                <div className="flex items-center justify-center gap-2 pt-2 text-xs text-neutral-500 dark:text-neutral-400">
+                  <Shield className="w-3.5 h-3.5 text-emerald-500" />
+                  <span>Secured with encryption</span>
+                </div>
               </div>
-            </div>
-          </div>
-        </div>
-      </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
 
       {/* Spacer to prevent content from hiding under fixed header */}
-      <div className="h-16 lg:h-18" />
+      <div className="h-16 lg:h-[72px]" />
     </>
   );
 }

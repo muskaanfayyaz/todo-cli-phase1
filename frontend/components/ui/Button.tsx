@@ -2,7 +2,7 @@
  * Premium Button Component
  *
  * World-class button with refined micro-interactions and premium styling.
- * Inspired by Linear, Stripe, and Vercel design systems.
+ * Supports light and dark modes with consistent design.
  */
 
 import { ButtonHTMLAttributes, forwardRef } from 'react';
@@ -44,7 +44,8 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       'transition-all duration-150 ease-out',
       // Focus
       'focus:outline-none focus-visible:outline-none',
-      'focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-white',
+      'focus-visible:ring-2 focus-visible:ring-offset-2',
+      'focus-visible:ring-offset-white dark:focus-visible:ring-offset-neutral-900',
       // Disabled
       'disabled:pointer-events-none disabled:opacity-50',
       // GPU acceleration for smooth animations
@@ -66,25 +67,26 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         'active:translate-y-0',
       ],
       secondary: [
-        'bg-white text-neutral-700',
-        'border border-neutral-200',
-        'hover:bg-neutral-50 hover:border-neutral-300 hover:text-neutral-900',
-        'active:bg-neutral-100',
+        'bg-white dark:bg-neutral-800 text-neutral-700 dark:text-neutral-200',
+        'border border-neutral-200 dark:border-neutral-700',
+        'hover:bg-neutral-50 dark:hover:bg-neutral-700 hover:border-neutral-300 dark:hover:border-neutral-600',
+        'hover:text-neutral-900 dark:hover:text-white',
+        'active:bg-neutral-100 dark:active:bg-neutral-600',
         'focus-visible:ring-neutral-500/20',
-        'shadow-xs',
+        'shadow-xs dark:shadow-none',
         'hover:shadow-sm',
       ],
       outline: [
-        'bg-transparent text-primary-600',
-        'border border-primary-200',
-        'hover:bg-primary-50 hover:border-primary-300',
-        'active:bg-primary-100',
+        'bg-transparent text-primary-600 dark:text-primary-400',
+        'border border-primary-200 dark:border-primary-700',
+        'hover:bg-primary-50 dark:hover:bg-primary-950/30 hover:border-primary-300 dark:hover:border-primary-600',
+        'active:bg-primary-100 dark:active:bg-primary-950/50',
         'focus-visible:ring-primary-500/30',
       ],
       ghost: [
-        'bg-transparent text-neutral-600',
-        'hover:bg-neutral-100 hover:text-neutral-900',
-        'active:bg-neutral-200',
+        'bg-transparent text-neutral-600 dark:text-neutral-400',
+        'hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100',
+        'active:bg-neutral-200 dark:active:bg-neutral-700',
         'focus-visible:ring-neutral-500/20',
       ],
       danger: [
