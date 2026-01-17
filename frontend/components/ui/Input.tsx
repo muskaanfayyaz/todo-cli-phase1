@@ -8,14 +8,14 @@
 import { InputHTMLAttributes, forwardRef, useId } from 'react';
 import { cn } from '@/lib/utils';
 
-export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size'> {
   label?: string;
   error?: string;
   helperText?: string;
   fullWidth?: boolean;
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
-  size?: 'sm' | 'md' | 'lg';
+  inputSize?: 'sm' | 'md' | 'lg';
 }
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
@@ -29,7 +29,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
       leftIcon,
       rightIcon,
       disabled,
-      size = 'md',
+      inputSize = 'md',
       id,
       ...props
     },
@@ -59,7 +59,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
       },
     };
 
-    const currentSize = sizes[size];
+    const currentSize = sizes[inputSize];
 
     const baseStyles = [
       'block w-full',
