@@ -180,7 +180,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         )}
 
         {/* Content */}
-        <span className={loading ? 'opacity-70' : ''}>{children}</span>
+        <span className={cn('inline-flex items-center', loading ? 'opacity-70' : '')}>{children}</span>
 
         {/* Right Icon */}
         {!loading && rightIcon && (

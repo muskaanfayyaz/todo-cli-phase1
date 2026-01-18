@@ -227,11 +227,11 @@ export default function Hero() {
               <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
                 <Button
                   size="lg"
-                  className="min-w-[220px] bg-gradient-to-r from-violet-600 to-primary-600 hover:from-violet-500 hover:to-primary-500 shadow-lg shadow-violet-500/25 hover:shadow-xl hover:shadow-violet-500/30 border-0"
+                  leftIcon={<Sparkles className="w-5 h-5" />}
+                  rightIcon={<ArrowRight className="w-5 h-5" />}
+                  className="min-w-[240px] bg-gradient-to-r from-violet-600 to-primary-600 hover:from-violet-500 hover:to-primary-500 shadow-lg shadow-violet-500/25 hover:shadow-xl hover:shadow-violet-500/30 border-0"
                 >
-                  <Sparkles className="w-5 h-5 mr-2" />
                   Get Started Free
-                  <ArrowRight className="w-5 h-5 ml-2" />
                 </Button>
               </motion.div>
             </Link>
@@ -240,9 +240,9 @@ export default function Hero() {
                 <Button
                   variant="outline"
                   size="lg"
-                  className="min-w-[220px] border-white/20 text-white hover:bg-white/10 hover:border-white/30"
+                  leftIcon={<Command className="w-5 h-5" />}
+                  className="min-w-[240px] border-white/20 text-white hover:bg-white/10 hover:border-white/30"
                 >
-                  <Command className="w-5 h-5 mr-2" />
                   Sign In
                 </Button>
               </motion.div>

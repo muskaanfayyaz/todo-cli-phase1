@@ -286,26 +286,35 @@ export default function Header() {
                     variant="ghost"
                     size="sm"
                     loading={loggingOut}
+                    leftIcon={<LogOut className="w-4 h-4" />}
                     className="text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100"
                   >
-                    <LogOut className="w-4 h-4 mr-1.5" />
                     {loggingOut ? "..." : "Logout"}
                   </Button>
                 </div>
               ) : (
                 <>
                   <Link href="/login">
-                    <Button variant="ghost" size="sm" className="text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100">
-                      <LogIn className="w-4 h-4 mr-1.5" />
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      leftIcon={<LogIn className="w-4 h-4" />}
+                      className="text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100"
+                    >
                       Sign in
                     </Button>
                   </Link>
                   <Link href="/register">
-                    <Button size="sm" className="shadow-md shadow-primary-500/20 hover:shadow-lg hover:shadow-primary-500/25">
+                    <Button
+                      size="sm"
+                      rightIcon={
+                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                        </svg>
+                      }
+                      className="shadow-md shadow-primary-500/20 hover:shadow-lg hover:shadow-primary-500/25"
+                    >
                       Get Started
-                      <svg className="w-4 h-4 ml-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                      </svg>
                     </Button>
                   </Link>
                 </>
@@ -483,19 +492,25 @@ export default function Header() {
                     fullWidth
                     size="lg"
                     loading={loggingOut}
+                    leftIcon={<LogOut className="w-5 h-5" />}
                     className="justify-center"
                   >
-                    <LogOut className="w-5 h-5 mr-2" />
                     {loggingOut ? "Signing out..." : "Sign out"}
                   </Button>
                 ) : (
                   <>
                     <Link href="/register" className="block" onClick={() => setMobileMenuOpen(false)}>
-                      <Button fullWidth size="lg" className="justify-center shadow-md shadow-primary-500/20">
+                      <Button
+                        fullWidth
+                        size="lg"
+                        rightIcon={
+                          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                          </svg>
+                        }
+                        className="justify-center shadow-md shadow-primary-500/20"
+                      >
                         Get Started Free
-                        <svg className="w-4 h-4 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                        </svg>
                       </Button>
                     </Link>
                     <Link href="/login" className="block" onClick={() => setMobileMenuOpen(false)}>

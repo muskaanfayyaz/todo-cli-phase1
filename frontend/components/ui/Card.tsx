@@ -31,22 +31,22 @@ const Card = forwardRef<HTMLDivElement, CardProps>(
     ref
   ) => {
     const baseStyles = [
-      'bg-white rounded-xl',
+      'bg-white dark:bg-neutral-900 rounded-xl',
       'transition-all duration-200 ease-out',
       'transform-gpu',
     ];
 
     const variants = {
       default: [
-        'border border-neutral-200/80',
-        'shadow-[0_1px_2px_0_rgba(0,0,0,0.03)]',
+        'border border-neutral-200/80 dark:border-neutral-800',
+        'shadow-[0_1px_2px_0_rgba(0,0,0,0.03)] dark:shadow-none',
       ],
       elevated: [
-        'border border-neutral-100',
-        'shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05),0_2px_4px_-2px_rgba(0,0,0,0.03)]',
+        'border border-neutral-100 dark:border-neutral-800',
+        'shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05),0_2px_4px_-2px_rgba(0,0,0,0.03)] dark:shadow-none',
       ],
       outlined: [
-        'border border-neutral-200',
+        'border border-neutral-200 dark:border-neutral-700',
         'shadow-none',
       ],
       ghost: [
@@ -66,9 +66,9 @@ const Card = forwardRef<HTMLDivElement, CardProps>(
 
     const hoverStyles = hover || interactive
       ? [
-          'hover:border-neutral-300',
-          variant === 'elevated' && 'hover:shadow-[0_12px_24px_-4px_rgba(0,0,0,0.08),0_4px_8px_-2px_rgba(0,0,0,0.03)]',
-          variant === 'default' && 'hover:shadow-[0_4px_8px_-2px_rgba(0,0,0,0.06),0_2px_4px_-2px_rgba(0,0,0,0.03)]',
+          'hover:border-neutral-300 dark:hover:border-neutral-600',
+          variant === 'elevated' && 'hover:shadow-[0_12px_24px_-4px_rgba(0,0,0,0.08),0_4px_8px_-2px_rgba(0,0,0,0.03)] dark:hover:shadow-none',
+          variant === 'default' && 'hover:shadow-[0_4px_8px_-2px_rgba(0,0,0,0.06),0_2px_4px_-2px_rgba(0,0,0,0.03)] dark:hover:shadow-none',
           'hover:-translate-y-0.5',
         ]
       : [];
@@ -118,7 +118,7 @@ export const CardHeader = forwardRef<
     ref={ref}
     className={cn(
       'flex flex-col space-y-1.5',
-      !noBorder && 'pb-4 border-b border-neutral-100',
+      !noBorder && 'pb-4 border-b border-neutral-100 dark:border-neutral-800',
       className
     )}
     {...props}
@@ -134,7 +134,7 @@ export const CardTitle = forwardRef<
   <Component
     ref={ref}
     className={cn(
-      'text-lg font-semibold text-neutral-900 tracking-tight',
+      'text-lg font-semibold text-neutral-900 dark:text-white tracking-tight',
       className
     )}
     {...props}
@@ -149,7 +149,7 @@ export const CardDescription = forwardRef<
 >(({ className, ...props }, ref) => (
   <p
     ref={ref}
-    className={cn('text-sm text-neutral-500', className)}
+    className={cn('text-sm text-neutral-500 dark:text-neutral-400', className)}
     {...props}
   />
 ));
@@ -173,7 +173,7 @@ export const CardFooter = forwardRef<
     ref={ref}
     className={cn(
       'flex items-center gap-3',
-      !noBorder && 'pt-4 mt-4 border-t border-neutral-100',
+      !noBorder && 'pt-4 mt-4 border-t border-neutral-100 dark:border-neutral-800',
       className
     )}
     {...props}
@@ -199,34 +199,34 @@ export const StatCard = forwardRef<HTMLDivElement, StatCardProps>(
   ({ label, value, icon, trend, variant = 'default', className, ...props }, ref) => {
     const variantStyles = {
       default: {
-        bg: 'bg-neutral-50',
-        border: 'border-neutral-200',
+        bg: 'bg-neutral-50 dark:bg-neutral-800/50',
+        border: 'border-neutral-200 dark:border-neutral-700',
         icon: 'text-neutral-400',
-        value: 'text-neutral-900',
+        value: 'text-neutral-900 dark:text-white',
       },
       primary: {
-        bg: 'bg-primary-50',
-        border: 'border-primary-100',
-        icon: 'text-primary-500',
-        value: 'text-primary-900',
+        bg: 'bg-primary-50 dark:bg-primary-950/30',
+        border: 'border-primary-100 dark:border-primary-900/50',
+        icon: 'text-primary-500 dark:text-primary-400',
+        value: 'text-primary-900 dark:text-primary-100',
       },
       success: {
-        bg: 'bg-success-50',
-        border: 'border-success-100',
-        icon: 'text-success-500',
-        value: 'text-success-900',
+        bg: 'bg-success-50 dark:bg-success-950/30',
+        border: 'border-success-100 dark:border-success-900/50',
+        icon: 'text-success-500 dark:text-success-400',
+        value: 'text-success-900 dark:text-success-100',
       },
       warning: {
-        bg: 'bg-warning-50',
-        border: 'border-warning-100',
-        icon: 'text-warning-500',
-        value: 'text-warning-900',
+        bg: 'bg-warning-50 dark:bg-warning-950/30',
+        border: 'border-warning-100 dark:border-warning-900/50',
+        icon: 'text-warning-500 dark:text-warning-400',
+        value: 'text-warning-900 dark:text-warning-100',
       },
       danger: {
-        bg: 'bg-danger-50',
-        border: 'border-danger-100',
-        icon: 'text-danger-500',
-        value: 'text-danger-900',
+        bg: 'bg-danger-50 dark:bg-danger-950/30',
+        border: 'border-danger-100 dark:border-danger-900/50',
+        icon: 'text-danger-500 dark:text-danger-400',
+        value: 'text-danger-900 dark:text-danger-100',
       },
     };
 
@@ -239,14 +239,14 @@ export const StatCard = forwardRef<HTMLDivElement, StatCardProps>(
           'rounded-xl p-4 border transition-all duration-200',
           styles.bg,
           styles.border,
-          'hover:shadow-sm',
+          'hover:shadow-sm dark:hover:shadow-none',
           className
         )}
         {...props}
       >
         <div className="flex items-start justify-between">
           <div>
-            <p className="text-xs font-medium text-neutral-500 uppercase tracking-wider mb-1">
+            <p className="text-xs font-medium text-neutral-500 dark:text-neutral-400 uppercase tracking-wider mb-1">
               {label}
             </p>
             <p className={cn('text-2xl font-bold tracking-tight', styles.value)}>
@@ -257,7 +257,7 @@ export const StatCard = forwardRef<HTMLDivElement, StatCardProps>(
                 <span
                   className={cn(
                     'text-xs font-medium',
-                    trend.isPositive ? 'text-success-600' : 'text-danger-600'
+                    trend.isPositive ? 'text-success-600 dark:text-success-400' : 'text-danger-600 dark:text-danger-400'
                   )}
                 >
                   {trend.isPositive ? '+' : ''}{trend.value}%
@@ -265,7 +265,7 @@ export const StatCard = forwardRef<HTMLDivElement, StatCardProps>(
                 <svg
                   className={cn(
                     'w-3 h-3',
-                    trend.isPositive ? 'text-success-600' : 'text-danger-600 rotate-180'
+                    trend.isPositive ? 'text-success-600 dark:text-success-400' : 'text-danger-600 dark:text-danger-400 rotate-180'
                   )}
                   fill="none"
                   viewBox="0 0 24 24"

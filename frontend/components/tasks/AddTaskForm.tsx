@@ -166,7 +166,7 @@ export default function AddTaskForm({ userId, onTaskAdded }: AddTaskFormProps) {
           onClick={() => setShowDescription(true)}
           className={cn(
             "inline-flex items-center gap-2 text-sm",
-            "text-neutral-500 hover:text-primary-600",
+            "text-neutral-500 dark:text-neutral-400 hover:text-primary-600 dark:hover:text-primary-400",
             "transition-colors duration-150"
           )}
         >
@@ -188,7 +188,7 @@ export default function AddTaskForm({ userId, onTaskAdded }: AddTaskFormProps) {
       ) : (
         <div className="animate-fade-in">
           <div className="flex items-center justify-between mb-2">
-            <label className="text-sm font-medium text-neutral-700">
+            <label className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
               Description
             </label>
             <button
@@ -197,7 +197,7 @@ export default function AddTaskForm({ userId, onTaskAdded }: AddTaskFormProps) {
                 setDescription("");
                 setShowDescription(false);
               }}
-              className="text-xs text-neutral-400 hover:text-neutral-600 transition-colors"
+              className="text-xs text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-300 transition-colors"
             >
               Remove
             </button>
@@ -246,8 +246,8 @@ export default function AddTaskForm({ userId, onTaskAdded }: AddTaskFormProps) {
       </Button>
 
       {/* Keyboard Hint */}
-      <p className="text-xs text-center text-neutral-400">
-        Press <kbd className="px-1.5 py-0.5 rounded bg-neutral-100 text-neutral-600 font-mono text-xs">Enter</kbd> to add quickly
+      <p className="text-xs text-center text-neutral-400 dark:text-neutral-500">
+        Press <kbd className="px-1.5 py-0.5 rounded bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300 font-mono text-xs">Enter</kbd> to add quickly
       </p>
     </form>
   );

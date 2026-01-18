@@ -63,35 +63,35 @@ const benefits: Benefit[] = [
 ];
 
 const techStack = [
-  { name: 'Next.js 16', color: 'text-neutral-900' },
-  { name: 'React 19', color: 'text-info-600' },
-  { name: 'FastAPI', color: 'text-success-600' },
-  { name: 'PostgreSQL', color: 'text-primary-600' },
-  { name: 'TypeScript', color: 'text-info-700' },
+  { name: 'Next.js 16', color: 'text-neutral-900 dark:text-white' },
+  { name: 'React 19', color: 'text-info-600 dark:text-info-400' },
+  { name: 'FastAPI', color: 'text-success-600 dark:text-success-400' },
+  { name: 'PostgreSQL', color: 'text-primary-600 dark:text-primary-400' },
+  { name: 'TypeScript', color: 'text-info-700 dark:text-info-400' },
 ];
 
 export default function Benefits() {
   return (
-    <section className="relative py-24 sm:py-32 bg-neutral-50/50 overflow-hidden">
+    <section className="relative py-24 sm:py-32 bg-neutral-50/50 dark:bg-neutral-900/50 overflow-hidden">
       {/* Decorative Elements */}
       <div className="absolute inset-0">
-        <div className="absolute -top-40 -right-40 w-[500px] h-[500px] bg-gradient-to-bl from-primary-100/30 to-transparent rounded-full blur-3xl" />
-        <div className="absolute -bottom-40 -left-40 w-[500px] h-[500px] bg-gradient-to-tr from-violet-100/30 to-transparent rounded-full blur-3xl" />
+        <div className="absolute -top-40 -right-40 w-[500px] h-[500px] bg-gradient-to-bl from-primary-100/30 dark:from-primary-900/20 to-transparent rounded-full blur-3xl" />
+        <div className="absolute -bottom-40 -left-40 w-[500px] h-[500px] bg-gradient-to-tr from-violet-100/30 dark:from-violet-900/20 to-transparent rounded-full blur-3xl" />
       </div>
 
       <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-16 sm:mb-20">
-          <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-success-50 text-success-700 mb-4">
+          <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-success-50 dark:bg-success-950/50 text-success-700 dark:text-success-400 mb-4">
             Benefits
           </span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-neutral-900 tracking-tight mb-4">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-neutral-900 dark:text-white tracking-tight mb-4">
             Why choose our{' '}
             <span className="bg-gradient-to-r from-success-600 to-primary-600 bg-clip-text text-transparent">
               task manager?
             </span>
           </h2>
-          <p className="text-lg text-neutral-600 leading-relaxed">
+          <p className="text-lg text-neutral-600 dark:text-neutral-400 leading-relaxed">
             Built with modern best practices and production-grade technology for the best experience.
           </p>
         </div>
@@ -121,10 +121,10 @@ export default function Benefits() {
 
                 {/* Content */}
                 <div className="flex-1">
-                  <h3 className="text-xl font-semibold text-neutral-900 mb-2">
+                  <h3 className="text-xl font-semibold text-neutral-900 dark:text-white mb-2">
                     {benefit.title}
                   </h3>
-                  <p className="text-neutral-600 leading-relaxed mb-4">
+                  <p className="text-neutral-600 dark:text-neutral-400 leading-relaxed mb-4">
                     {benefit.description}
                   </p>
 
@@ -133,11 +133,11 @@ export default function Benefits() {
                     {benefit.highlights.map((highlight, idx) => (
                       <li
                         key={idx}
-                        className="flex items-center gap-2.5 text-sm text-neutral-700"
+                        className="flex items-center gap-2.5 text-sm text-neutral-700 dark:text-neutral-300"
                       >
-                        <div className="flex-shrink-0 w-5 h-5 rounded-full bg-success-50 flex items-center justify-center">
+                        <div className="flex-shrink-0 w-5 h-5 rounded-full bg-success-50 dark:bg-success-950/50 flex items-center justify-center">
                           <svg
-                            className="w-3 h-3 text-success-600"
+                            className="w-3 h-3 text-success-600 dark:text-success-400"
                             fill="currentColor"
                             viewBox="0 0 20 20"
                           >
@@ -159,9 +159,9 @@ export default function Benefits() {
         </div>
 
         {/* Tech Stack Section */}
-        <div className="pt-12 border-t border-neutral-200/60">
+        <div className="pt-12 border-t border-neutral-200/60 dark:border-neutral-700/60">
           <div className="text-center">
-            <p className="text-sm font-medium text-neutral-500 uppercase tracking-wider mb-8">
+            <p className="text-sm font-medium text-neutral-500 dark:text-neutral-400 uppercase tracking-wider mb-8">
               Built with production-grade technology
             </p>
             <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-4">

@@ -63,32 +63,32 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
 
     const baseStyles = [
       'block w-full',
-      'bg-white',
+      'bg-white dark:bg-neutral-800',
       'border rounded-lg',
-      'text-neutral-900 placeholder:text-neutral-400',
+      'text-neutral-900 dark:text-white placeholder:text-neutral-400 dark:placeholder:text-neutral-500',
       // Smooth transitions
       'transition-all duration-150 ease-out',
       // Focus state
       'focus:outline-none',
       // Disabled state
-      'disabled:bg-neutral-50 disabled:text-neutral-500 disabled:cursor-not-allowed disabled:opacity-60',
+      'disabled:bg-neutral-50 dark:disabled:bg-neutral-900 disabled:text-neutral-500 disabled:cursor-not-allowed disabled:opacity-60',
       // Shadow
-      'shadow-xs',
+      'shadow-xs dark:shadow-none',
     ];
 
     const stateStyles = error
       ? [
-          'border-danger-300',
+          'border-danger-300 dark:border-danger-600',
           'focus:border-danger-500',
           'focus:ring-4 focus:ring-danger-500/10',
         ]
       : [
-          'border-neutral-200',
-          'hover:border-neutral-300',
-          'focus:border-primary-500',
+          'border-neutral-200 dark:border-neutral-700',
+          'hover:border-neutral-300 dark:hover:border-neutral-600',
+          'focus:border-primary-500 dark:focus:border-primary-400',
           'focus:ring-4 focus:ring-primary-500/10',
           // Subtle shadow on focus
-          'focus:shadow-sm',
+          'focus:shadow-sm dark:focus:shadow-none',
         ];
 
     const inputElement = (
@@ -158,7 +158,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             className={cn(
               'block font-medium',
               currentSize.label,
-              error ? 'text-danger-700' : 'text-neutral-700',
+              error ? 'text-danger-700 dark:text-danger-400' : 'text-neutral-700 dark:text-neutral-300',
               disabled && 'opacity-60'
             )}
           >
@@ -176,7 +176,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             className={cn(
               currentSize.helper,
               'flex items-center gap-1',
-              error ? 'text-danger-600' : 'text-neutral-500'
+              error ? 'text-danger-600 dark:text-danger-400' : 'text-neutral-500 dark:text-neutral-400'
             )}
           >
             {error && (
@@ -249,29 +249,29 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
 
     const baseStyles = [
       'block w-full',
-      'bg-white',
+      'bg-white dark:bg-neutral-800',
       'border rounded-lg',
       'px-3.5 py-2.5 text-sm',
-      'text-neutral-900 placeholder:text-neutral-400',
+      'text-neutral-900 dark:text-white placeholder:text-neutral-400 dark:placeholder:text-neutral-500',
       'transition-all duration-150 ease-out',
       'focus:outline-none',
-      'disabled:bg-neutral-50 disabled:text-neutral-500 disabled:cursor-not-allowed disabled:opacity-60',
-      'shadow-xs',
+      'disabled:bg-neutral-50 dark:disabled:bg-neutral-900 disabled:text-neutral-500 disabled:cursor-not-allowed disabled:opacity-60',
+      'shadow-xs dark:shadow-none',
       autoResize ? 'resize-none overflow-hidden min-h-[80px]' : 'resize-y min-h-[80px]',
     ];
 
     const stateStyles = error
       ? [
-          'border-danger-300',
+          'border-danger-300 dark:border-danger-600',
           'focus:border-danger-500',
           'focus:ring-4 focus:ring-danger-500/10',
         ]
       : [
-          'border-neutral-200',
-          'hover:border-neutral-300',
-          'focus:border-primary-500',
+          'border-neutral-200 dark:border-neutral-700',
+          'hover:border-neutral-300 dark:hover:border-neutral-600',
+          'focus:border-primary-500 dark:focus:border-primary-400',
           'focus:ring-4 focus:ring-primary-500/10',
-          'focus:shadow-sm',
+          'focus:shadow-sm dark:focus:shadow-none',
         ];
 
     const textareaElement = (
@@ -309,7 +309,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
             htmlFor={textareaId}
             className={cn(
               'block text-sm font-medium',
-              error ? 'text-danger-700' : 'text-neutral-700',
+              error ? 'text-danger-700 dark:text-danger-400' : 'text-neutral-700 dark:text-neutral-300',
               disabled && 'opacity-60'
             )}
           >
@@ -322,7 +322,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
             id={error ? `${textareaId}-error` : `${textareaId}-helper`}
             className={cn(
               'text-xs flex items-center gap-1',
-              error ? 'text-danger-600' : 'text-neutral-500'
+              error ? 'text-danger-600 dark:text-danger-400' : 'text-neutral-500 dark:text-neutral-400'
             )}
           >
             {error && (

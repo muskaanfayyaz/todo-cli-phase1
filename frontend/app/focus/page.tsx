@@ -328,7 +328,7 @@ export default function FocusPage() {
       {/* Main Content */}
       <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 -mt-6">
         {/* Time Blocks */}
-        <motion.div variants={itemVariants} className="flex gap-3 mb-8 overflow-x-auto pb-2">
+        <motion.div variants={itemVariants} className="flex gap-3 mb-8 overflow-x-auto pb-2 relative z-10">
           {timeBlocks.map((block) => {
             const Icon = block.icon;
             const isActive = activeBlock === block.id;
@@ -341,19 +341,19 @@ export default function FocusPage() {
                 className={cn(
                   "flex items-center gap-3 px-5 py-4 rounded-2xl border-2 transition-all min-w-[200px]",
                   isActive
-                    ? "bg-white border-primary-500 shadow-lg"
-                    : "bg-white/50 border-transparent hover:bg-white hover:border-neutral-200"
+                    ? "bg-white dark:bg-neutral-800 border-primary-500 shadow-lg shadow-primary-500/20"
+                    : "bg-white dark:bg-neutral-800/80 border-neutral-200 dark:border-neutral-700 hover:bg-white dark:hover:bg-neutral-800 hover:border-primary-300 dark:hover:border-primary-600 hover:shadow-md"
                 )}
               >
                 <div className={cn(
-                  "w-10 h-10 rounded-xl bg-gradient-to-br flex items-center justify-center",
+                  "w-10 h-10 rounded-xl bg-gradient-to-br flex items-center justify-center shadow-md",
                   block.color
                 )}>
                   <Icon className="w-5 h-5 text-white" />
                 </div>
                 <div className="text-left">
-                  <p className="font-semibold text-neutral-900">{block.label}</p>
-                  <p className="text-xs text-neutral-500">{block.time}</p>
+                  <p className="font-semibold text-neutral-900 dark:text-white">{block.label}</p>
+                  <p className="text-xs text-neutral-500 dark:text-neutral-400">{block.time}</p>
                 </div>
               </motion.button>
             );
@@ -362,47 +362,47 @@ export default function FocusPage() {
 
         {/* AI Schedule */}
         <motion.div variants={itemVariants}>
-          <Card className="overflow-hidden">
-            <div className="p-5 border-b border-neutral-100 bg-gradient-to-r from-violet-50 to-primary-50">
+          <Card className="overflow-hidden dark:bg-neutral-900 dark:border-neutral-800">
+            <div className="p-5 border-b border-neutral-100 dark:border-neutral-800 bg-gradient-to-r from-violet-50 to-primary-50 dark:from-violet-950/30 dark:to-primary-950/30">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-500 to-primary-600 flex items-center justify-center shadow-md">
                   <Zap className="w-5 h-5 text-white" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-neutral-900">AI-Suggested Schedule</h3>
-                  <p className="text-sm text-neutral-500">Optimized for your productivity patterns</p>
+                  <h3 className="font-semibold text-neutral-900 dark:text-white">AI-Suggested Schedule</h3>
+                  <p className="text-sm text-neutral-500 dark:text-neutral-400">Optimized for your productivity patterns</p>
                 </div>
               </div>
             </div>
             <CardContent className="p-0">
               {pendingTasks.length === 0 ? (
                 <div className="flex flex-col items-center justify-center py-16 text-center">
-                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-100 to-teal-100 flex items-center justify-center mb-4">
-                    <CheckCircle2 className="w-8 h-8 text-emerald-600" />
+                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-100 to-teal-100 dark:from-emerald-900/30 dark:to-teal-900/30 flex items-center justify-center mb-4">
+                    <CheckCircle2 className="w-8 h-8 text-emerald-600 dark:text-emerald-400" />
                   </div>
-                  <h3 className="text-lg font-semibold text-neutral-900 mb-2">All tasks completed!</h3>
-                  <p className="text-neutral-500">Enjoy your free time.</p>
+                  <h3 className="text-lg font-semibold text-neutral-900 dark:text-white mb-2">All tasks completed!</h3>
+                  <p className="text-neutral-500 dark:text-neutral-400">Enjoy your free time.</p>
                 </div>
               ) : (
-                <div className="divide-y divide-neutral-100">
+                <div className="divide-y divide-neutral-100 dark:divide-neutral-800">
                   {pendingTasks.map((task, i) => (
                     <motion.div
                       key={task.id}
                       initial={{ opacity: 0, x: -20 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: i * 0.05 }}
-                      className="group flex items-center gap-4 p-5 hover:bg-neutral-50 transition-colors"
+                      className="group flex items-center gap-4 p-5 hover:bg-neutral-50 dark:hover:bg-neutral-800/50 transition-colors"
                     >
                       <button
                         onClick={() => handleCompleteTask(task)}
-                        className="flex-shrink-0 w-6 h-6 rounded-full border-2 border-neutral-300 hover:border-emerald-500 hover:bg-emerald-50 transition-colors flex items-center justify-center"
+                        className="flex-shrink-0 w-6 h-6 rounded-full border-2 border-neutral-300 dark:border-neutral-600 hover:border-emerald-500 hover:bg-emerald-50 dark:hover:bg-emerald-950/30 transition-colors flex items-center justify-center"
                       >
                         <CheckCircle2 className="w-4 h-4 text-emerald-500 opacity-0 group-hover:opacity-100 transition-opacity" />
                       </button>
                       <div className="flex-1 min-w-0">
-                        <p className="font-medium text-neutral-900">{task.title}</p>
+                        <p className="font-medium text-neutral-900 dark:text-white">{task.title}</p>
                         {task.description && (
-                          <p className="text-sm text-neutral-500 truncate">{task.description}</p>
+                          <p className="text-sm text-neutral-500 dark:text-neutral-400 truncate">{task.description}</p>
                         )}
                       </div>
                       <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">

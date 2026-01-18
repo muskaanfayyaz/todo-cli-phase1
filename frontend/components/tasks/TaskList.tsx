@@ -39,10 +39,10 @@ export default function TaskList({
         {/* Illustrated Icon */}
         <div className="relative mb-6">
           {/* Background glow */}
-          <div className="absolute inset-0 w-20 h-20 bg-primary-100 rounded-full blur-xl opacity-60" />
+          <div className="absolute inset-0 w-20 h-20 bg-primary-100 dark:bg-primary-900/30 rounded-full blur-xl opacity-60" />
 
           {/* Icon container */}
-          <div className="relative w-20 h-20 bg-gradient-to-br from-primary-50 to-violet-50 rounded-2xl flex items-center justify-center border border-primary-100/50">
+          <div className="relative w-20 h-20 bg-gradient-to-br from-primary-50 to-violet-50 dark:from-primary-950/50 dark:to-violet-950/50 rounded-2xl flex items-center justify-center border border-primary-100/50 dark:border-primary-800/50">
             <svg
               className="w-10 h-10 text-primary-400"
               fill="none"
@@ -60,25 +60,25 @@ export default function TaskList({
         </div>
 
         {/* Text Content */}
-        <h3 className="text-lg font-semibold text-neutral-900 mb-2">
+        <h3 className="text-lg font-semibold text-neutral-900 dark:text-white mb-2">
           No tasks yet
         </h3>
-        <p className="text-sm text-neutral-500 text-center max-w-xs leading-relaxed">
+        <p className="text-sm text-neutral-500 dark:text-neutral-400 text-center max-w-xs leading-relaxed">
           Your task list is empty. Add your first task above to start organizing your day.
         </p>
 
         {/* Decorative dots */}
         <div className="flex items-center gap-1.5 mt-6">
-          <span className="w-1.5 h-1.5 rounded-full bg-neutral-200" />
-          <span className="w-1.5 h-1.5 rounded-full bg-neutral-300" />
-          <span className="w-1.5 h-1.5 rounded-full bg-neutral-200" />
+          <span className="w-1.5 h-1.5 rounded-full bg-neutral-200 dark:bg-neutral-700" />
+          <span className="w-1.5 h-1.5 rounded-full bg-neutral-300 dark:bg-neutral-600" />
+          <span className="w-1.5 h-1.5 rounded-full bg-neutral-200 dark:bg-neutral-700" />
         </div>
       </div>
     );
   }
 
   return (
-    <div className="divide-y divide-neutral-100">
+    <div className="divide-y divide-neutral-100 dark:divide-neutral-800">
       {tasks.map((task, index) => (
         <div
           key={task.id}
@@ -114,14 +114,14 @@ export function TaskListCompact({
   if (tasks.length === 0) {
     return (
       <div className="text-center py-8 px-4">
-        <p className="text-sm text-neutral-500">No tasks</p>
+        <p className="text-sm text-neutral-500 dark:text-neutral-400">No tasks</p>
       </div>
     );
   }
 
   return (
     <div>
-      <div className="divide-y divide-neutral-100">
+      <div className="divide-y divide-neutral-100 dark:divide-neutral-800">
         {displayTasks.map((task, index) => (
           <div
             key={task.id}
@@ -139,8 +139,8 @@ export function TaskListCompact({
       </div>
 
       {remainingCount > 0 && (
-        <div className="px-5 py-3 text-center border-t border-neutral-100">
-          <span className="text-xs text-neutral-500">
+        <div className="px-5 py-3 text-center border-t border-neutral-100 dark:border-neutral-800">
+          <span className="text-xs text-neutral-500 dark:text-neutral-400">
             +{remainingCount} more task{remainingCount !== 1 ? "s" : ""}
           </span>
         </div>

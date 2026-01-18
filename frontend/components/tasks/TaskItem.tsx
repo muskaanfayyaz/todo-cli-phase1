@@ -83,8 +83,8 @@ export default function TaskItem({
           "group relative",
           "px-5 py-4",
           "transition-all duration-200 ease-out",
-          "hover:bg-neutral-50/80",
-          "border-b border-neutral-100 last:border-b-0",
+          "hover:bg-neutral-50/80 dark:hover:bg-neutral-800/50",
+          "border-b border-neutral-100 dark:border-neutral-800 last:border-b-0",
           loading && "opacity-60 pointer-events-none"
         )}
         onMouseEnter={() => setIsHovered(true)}
@@ -99,10 +99,10 @@ export default function TaskItem({
               "relative flex-shrink-0 mt-0.5",
               "w-5 h-5 rounded-md",
               "border-2 transition-all duration-200 ease-out",
-              "focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2",
+              "focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-neutral-900",
               task.completed
                 ? "bg-primary-500 border-primary-500 shadow-sm"
-                : "bg-white border-neutral-300 hover:border-primary-400 hover:shadow-sm",
+                : "bg-white dark:bg-neutral-800 border-neutral-300 dark:border-neutral-600 hover:border-primary-400 hover:shadow-sm",
               loading && "cursor-not-allowed"
             )}
             aria-label={`Mark "${task.title}" as ${task.completed ? "incomplete" : "complete"}`}
@@ -142,8 +142,8 @@ export default function TaskItem({
                 "text-sm font-medium leading-snug",
                 "transition-all duration-200",
                 task.completed
-                  ? "text-neutral-400 line-through decoration-neutral-300"
-                  : "text-neutral-900"
+                  ? "text-neutral-400 dark:text-neutral-500 line-through decoration-neutral-300 dark:decoration-neutral-600"
+                  : "text-neutral-900 dark:text-white"
               )}
             >
               {task.title}
@@ -155,7 +155,7 @@ export default function TaskItem({
                 className={cn(
                   "mt-1 text-sm leading-relaxed",
                   "transition-all duration-200",
-                  task.completed ? "text-neutral-400" : "text-neutral-500"
+                  task.completed ? "text-neutral-400 dark:text-neutral-500" : "text-neutral-500 dark:text-neutral-400"
                 )}
               >
                 {task.description}
@@ -184,7 +184,7 @@ export default function TaskItem({
 
               {/* Completed Badge */}
               {task.completed && (
-                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-success-50 text-success-700">
+                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-success-50 dark:bg-success-950/50 text-success-700 dark:text-success-400">
                   <svg
                     className="w-3 h-3"
                     fill="currentColor"
@@ -217,7 +217,7 @@ export default function TaskItem({
               variant="ghost"
               size="sm"
               aria-label="Edit task"
-              className="text-neutral-500 hover:text-primary-600 hover:bg-primary-50"
+              className="text-neutral-500 dark:text-neutral-400 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-primary-50 dark:hover:bg-primary-950/50"
             >
               <svg
                 className="w-4 h-4"
@@ -241,7 +241,7 @@ export default function TaskItem({
               variant="ghost"
               size="sm"
               aria-label="Delete task"
-              className="text-neutral-500 hover:text-danger-600 hover:bg-danger-50"
+              className="text-neutral-500 dark:text-neutral-400 hover:text-danger-600 dark:hover:text-danger-400 hover:bg-danger-50 dark:hover:bg-danger-950/50"
             >
               <svg
                 className="w-4 h-4"
