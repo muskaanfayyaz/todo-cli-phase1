@@ -117,9 +117,9 @@ export default function TasksPage() {
   // Error or no session state
   if (error || !userId) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-neutral-50 to-white p-4">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-neutral-50 to-white dark:from-neutral-950 dark:to-neutral-900 p-4">
         <div className="w-full max-w-md animate-fade-in-up">
-          <div className="bg-white rounded-2xl border border-neutral-200 shadow-lg p-8 text-center">
+          <div className="bg-white dark:bg-neutral-800 rounded-2xl border border-neutral-200 dark:border-neutral-700 shadow-lg p-8 text-center">
             {/* Error Icon */}
             <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-danger-50 flex items-center justify-center">
               <svg className="w-8 h-8 text-danger-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -150,9 +150,9 @@ export default function TasksPage() {
   }
 
   return (
-    <div className="min-h-screen bg-neutral-50">
+    <div className="min-h-screen bg-neutral-50 dark:bg-neutral-950">
       {/* Header */}
-      <header className="sticky top-0 z-sticky bg-white/80 backdrop-blur-lg border-b border-neutral-200/50">
+      <header className="sticky top-0 z-sticky bg-white/80 dark:bg-neutral-900/80 backdrop-blur-lg border-b border-neutral-200/50 dark:border-neutral-800/50">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             {/* Left: Title & Welcome */}
@@ -165,8 +165,8 @@ export default function TasksPage() {
                   </svg>
                 </div>
                 <div>
-                  <h1 className="text-lg font-semibold text-neutral-900 tracking-tight">Tasks</h1>
-                  <p className="text-xs text-neutral-500 hidden sm:block">Welcome back, {userName}</p>
+                  <h1 className="text-lg font-semibold text-neutral-900 dark:text-white tracking-tight">Tasks</h1>
+                  <p className="text-xs text-neutral-500 dark:text-neutral-400 hidden sm:block">Welcome back, {userName}</p>
                 </div>
               </div>
             </div>
@@ -222,17 +222,17 @@ export default function TasksPage() {
 
         {/* Add Task Section */}
         <div className="mb-6 sm:mb-8 animate-fade-in delay-100">
-          <div className="bg-white rounded-xl border border-neutral-200/80 shadow-xs overflow-hidden">
-            <div className="px-5 py-4 border-b border-neutral-100">
+          <div className="bg-white dark:bg-neutral-900 rounded-xl border border-neutral-200/80 dark:border-neutral-800 shadow-xs overflow-hidden">
+            <div className="px-5 py-4 border-b border-neutral-100 dark:border-neutral-800">
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-lg bg-primary-50 flex items-center justify-center">
-                  <svg className="w-4 h-4 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <div className="w-8 h-8 rounded-lg bg-primary-50 dark:bg-primary-950/50 flex items-center justify-center">
+                  <svg className="w-4 h-4 text-primary-600 dark:text-primary-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
                   </svg>
                 </div>
                 <div>
-                  <h2 className="text-sm font-semibold text-neutral-900">Add New Task</h2>
-                  <p className="text-xs text-neutral-500">What do you need to accomplish?</p>
+                  <h2 className="text-sm font-semibold text-neutral-900 dark:text-white">Add New Task</h2>
+                  <p className="text-xs text-neutral-500 dark:text-neutral-400">What do you need to accomplish?</p>
                 </div>
               </div>
             </div>
@@ -244,7 +244,7 @@ export default function TasksPage() {
 
         {/* Filter Tabs */}
         <div className="mb-4 animate-fade-in delay-150">
-          <div className="flex p-1 bg-neutral-100 rounded-lg w-fit">
+          <div className="flex p-1 bg-neutral-100 dark:bg-neutral-800 rounded-lg w-fit">
             {(['all', 'active', 'completed'] as FilterType[]).map((filterOption) => (
               <button
                 key={filterOption}
@@ -252,8 +252,8 @@ export default function TasksPage() {
                 className={`
                   px-4 py-1.5 text-sm font-medium rounded-md transition-all duration-150
                   ${filter === filterOption
-                    ? 'bg-white text-neutral-900 shadow-sm'
-                    : 'text-neutral-600 hover:text-neutral-900'
+                    ? 'bg-white dark:bg-neutral-700 text-neutral-900 dark:text-white shadow-sm'
+                    : 'text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white'
                   }
                 `}
               >
@@ -268,7 +268,7 @@ export default function TasksPage() {
 
         {/* Task List */}
         <div className="animate-fade-in delay-200">
-          <div className="bg-white rounded-xl border border-neutral-200/80 shadow-xs overflow-hidden">
+          <div className="bg-white dark:bg-neutral-900 rounded-xl border border-neutral-200/80 dark:border-neutral-800 shadow-xs overflow-hidden">
             <TaskList
               tasks={filteredTasks}
               userId={userId}
@@ -281,10 +281,10 @@ export default function TasksPage() {
         {/* Footer Stats */}
         {tasks.length > 0 && (
           <div className="mt-6 text-center animate-fade-in delay-300">
-            <p className="text-xs text-neutral-400">
+            <p className="text-xs text-neutral-400 dark:text-neutral-500">
               {stats.completed} of {stats.total} tasks completed
               {stats.total > 0 && (
-                <span className="ml-2 text-primary-500 font-medium">
+                <span className="ml-2 text-primary-500 dark:text-primary-400 font-medium">
                   ({Math.round((stats.completed / stats.total) * 100)}%)
                 </span>
               )}

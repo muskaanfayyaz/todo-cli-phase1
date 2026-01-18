@@ -112,11 +112,11 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     };
 
     const sizes = {
-      xs: 'h-7 px-2.5 text-xs gap-1',
-      sm: 'h-8 px-3 text-sm gap-1.5',
-      md: 'h-9 px-4 text-sm gap-2',
-      lg: 'h-10 px-5 text-base gap-2',
-      xl: 'h-12 px-6 text-base gap-2.5',
+      xs: 'h-8 px-3 text-xs gap-1 leading-none',
+      sm: 'h-9 px-3.5 text-sm gap-1.5 leading-none',
+      md: 'h-10 px-4 text-sm gap-2 leading-none',
+      lg: 'h-11 px-5 text-base gap-2 leading-none',
+      xl: 'h-13 px-6 text-base gap-2.5 leading-none',
     };
 
     const iconSizes = {
@@ -206,11 +206,11 @@ export interface IconButtonProps extends Omit<ButtonProps, 'leftIcon' | 'rightIc
 export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
   ({ icon, size = 'md', className, children, ...props }, ref) => {
     const iconButtonSizes = {
-      xs: 'h-7 w-7',
-      sm: 'h-8 w-8',
-      md: 'h-9 w-9',
-      lg: 'h-10 w-10',
-      xl: 'h-12 w-12',
+      xs: 'h-8 w-8',
+      sm: 'h-9 w-9',
+      md: 'h-10 w-10',
+      lg: 'h-11 w-11',
+      xl: 'h-13 w-13',
     };
 
     return (

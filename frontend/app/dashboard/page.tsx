@@ -84,8 +84,8 @@ export default function DashboardPage() {
   };
 
   // Calculate stats
-  const completedToday = tasks.filter((t) => t.status === "completed").length;
-  const pendingTasks = tasks.filter((t) => t.status === "pending");
+  const completedToday = tasks.filter((t) => t.completed).length;
+  const pendingTasks = tasks.filter((t) => !t.completed);
   const completionRate = tasks.length > 0 ? Math.round((completedToday / tasks.length) * 100) : 0;
 
   // Get current greeting based on time
@@ -114,7 +114,7 @@ export default function DashboardPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-neutral-50">
+      <div className="min-h-screen flex items-center justify-center bg-neutral-50 dark:bg-neutral-950">
         <motion.div
           animate={{ rotate: 360 }}
           transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
@@ -131,7 +131,7 @@ export default function DashboardPage() {
       variants={containerVariants}
       initial="hidden"
       animate="visible"
-      className="min-h-screen bg-neutral-50"
+      className="min-h-screen bg-neutral-50 dark:bg-neutral-950"
     >
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-gradient-to-br from-violet-600 via-primary-600 to-primary-700 pt-8 pb-16">
@@ -162,10 +162,10 @@ export default function DashboardPage() {
                   Focus Mode
                 </Button>
               </Link>
-              <Link href="/insights">
+              <Link href="/tasks">
                 <Button className="bg-white text-primary-700 hover:bg-white/90">
-                  <Sparkles className="w-4 h-4 mr-2" />
-                  AI Insights
+                  <CheckCircle2 className="w-4 h-4 mr-2" />
+                  View Tasks
                 </Button>
               </Link>
             </div>
@@ -289,11 +289,10 @@ export default function DashboardPage() {
               <h3 className="text-sm font-semibold text-neutral-500 uppercase tracking-wider mb-4">
                 Quick Actions
               </h3>
-              <div className="grid sm:grid-cols-3 gap-4">
+              <div className="grid sm:grid-cols-2 gap-4">
                 {[
                   { label: "Add Task", icon: Plus, href: "/tasks", color: "from-primary-500 to-violet-500" },
-                  { label: "View Calendar", icon: Calendar, href: "/focus", color: "from-blue-500 to-cyan-500" },
-                  { label: "AI Insights", icon: Brain, href: "/insights", color: "from-violet-500 to-purple-500" },
+                  { label: "Focus Mode", icon: Target, href: "/focus", color: "from-blue-500 to-cyan-500" },
                 ].map((action, i) => (
                   <Link key={i} href={action.href}>
                     <motion.div

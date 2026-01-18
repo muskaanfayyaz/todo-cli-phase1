@@ -32,7 +32,7 @@ import { cn } from "@/lib/utils";
 import { Button, Card, CardContent } from "@/components/ui";
 import { AIBadge } from "@/components/ai";
 import { getSession } from "@/lib/auth";
-import { getTasks, updateTask, type Task } from "@/lib/api";
+import { getTasks, completeTask as completeTaskApi, type Task } from "@/lib/api";
 
 // Animation variants
 const containerVariants = {
@@ -114,8 +114,8 @@ export default function FocusPage() {
 
   const handleCompleteTask = async (task: Task) => {
     try {
-      await updateTask(task.id, { status: "completed" });
-      setTasks(tasks.map((t) => (t.id === task.id ? { ...t, status: "completed" } : t)));
+      await completeTaskApi(task.id);
+      setTasks(tasks.map((t) => (t.id === task.id ? { ...t, completed: true } : t)));
       if (currentTask?.id === task.id) {
         setCurrentTask(null);
         setFocusMode(false);
@@ -132,8 +132,8 @@ export default function FocusPage() {
     resetTimer();
   };
 
-  const pendingTasks = tasks.filter((t) => t.status === "pending");
-  const completedToday = tasks.filter((t) => t.status === "completed").length;
+  const pendingTasks = tasks.filter((t) => !t.completed);
+  const completedToday = tasks.filter((t) => t.completed).length;
 
   // Get current time of day
   const getCurrentBlock = () => {
@@ -149,7 +149,7 @@ export default function FocusPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-neutral-50">
+      <div className="min-h-screen flex items-center justify-center bg-neutral-50 dark:bg-neutral-950">
         <motion.div
           animate={{ rotate: 360 }}
           transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
@@ -290,7 +290,7 @@ export default function FocusPage() {
       variants={containerVariants}
       initial="hidden"
       animate="visible"
-      className="min-h-screen bg-neutral-50 pb-16"
+      className="min-h-screen bg-neutral-50 dark:bg-neutral-950 pb-16"
     >
       {/* Header */}
       <section className="relative overflow-hidden bg-gradient-to-br from-neutral-900 via-neutral-800 to-neutral-900 pt-8 pb-12">

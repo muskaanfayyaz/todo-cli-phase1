@@ -17,12 +17,9 @@ import {
   LayoutDashboard,
   CheckSquare,
   Sparkles,
-  Calendar,
-  Settings,
   Home,
   LogIn,
   LogOut,
-  User,
   Shield,
 } from "lucide-react";
 import { authClient, getSession } from "@/lib/auth";
@@ -66,24 +63,6 @@ const protectedLinks: NavItem[] = [
     href: "/tasks",
     label: "Tasks",
     icon: <CheckSquare className="w-4 h-4" />,
-    authRequired: true,
-  },
-  {
-    href: "/insights",
-    label: "AI Insights",
-    icon: <Sparkles className="w-4 h-4" />,
-    authRequired: true,
-  },
-  {
-    href: "/planner",
-    label: "Planner",
-    icon: <Calendar className="w-4 h-4" />,
-    authRequired: true,
-  },
-  {
-    href: "/settings",
-    label: "Settings",
-    icon: <Settings className="w-4 h-4" />,
     authRequired: true,
   },
 ];

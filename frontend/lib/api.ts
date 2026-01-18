@@ -9,38 +9,36 @@ import { api } from "./api-client";
 import { getSession } from "./auth";
 
 /**
- * Task type definition
+ * Task type definition (matches backend API response)
  */
 export interface Task {
-  id: string;
+  id: number;
   title: string;
   description: string;
-  status: "pending" | "completed";
-  priority?: "low" | "medium" | "high";
-  due_date?: string;
+  completed: boolean;
   created_at: string;
   updated_at: string;
 }
 
+// Convenience getter for status-based filtering (frontend compatibility)
+export function getTaskStatus(task: Task): "pending" | "completed" {
+  return task.completed ? "completed" : "pending";
+}
+
 /**
- * Task creation payload
+ * Task creation payload (matches backend API)
  */
 export interface CreateTaskPayload {
   title: string;
   description?: string;
-  priority?: "low" | "medium" | "high";
-  due_date?: string;
 }
 
 /**
- * Task update payload
+ * Task update payload (matches backend API)
  */
 export interface UpdateTaskPayload {
   title?: string;
   description?: string;
-  status?: "pending" | "completed";
-  priority?: "low" | "medium" | "high";
-  due_date?: string;
 }
 
 /**
@@ -51,7 +49,7 @@ async function getUserEndpoint(): Promise<string> {
   if (!session?.user?.id) {
     throw new Error("User not authenticated");
   }
-  return `/api/user-${session.user.id}/tasks`;
+  return `/api/${session.user.id}/tasks`;
 }
 
 /**
@@ -108,15 +106,17 @@ export async function deleteTask(taskId: string): Promise<void> {
 }
 
 /**
- * Mark a task as completed
+ * Mark a task as completed (uses PATCH endpoint)
  */
-export async function completeTask(taskId: string): Promise<Task> {
-  return updateTask(taskId, { status: "completed" });
+export async function completeTask(taskId: number | string): Promise<Task> {
+  const endpoint = await getUserEndpoint();
+  return await api.patch<Task>(`${endpoint}/${taskId}/complete`);
 }
 
 /**
- * Mark a task as pending (uncomplete)
+ * Mark a task as pending/uncomplete (uses PATCH endpoint)
  */
-export async function uncompleteTask(taskId: string): Promise<Task> {
-  return updateTask(taskId, { status: "pending" });
+export async function uncompleteTask(taskId: number | string): Promise<Task> {
+  const endpoint = await getUserEndpoint();
+  return await api.patch<Task>(`${endpoint}/${taskId}/uncomplete`);
 }
