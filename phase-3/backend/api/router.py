@@ -23,8 +23,8 @@ from app.database import get_session
 
 # Phase III imports
 from .schemas import ChatRequest, ChatResponse, ToolCallResponse
-from agent import AgentExecutor
-from repositories import ConversationRepository
+from ..agent import AgentExecutor
+from ..repositories import ConversationRepository
 
 
 logger = logging.getLogger(__name__)
