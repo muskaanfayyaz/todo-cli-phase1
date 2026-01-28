@@ -125,4 +125,4 @@ MIT License
 
 ---
 
-**Built with Claude Code using Spec-Kit Plus methodology**
+**Built with Claude Code using Spec-Kit Plus methodology.**
