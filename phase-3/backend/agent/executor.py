@@ -48,7 +48,20 @@ def _convert_to_gemini_tools() -> List[FunctionDeclaration]:
     """Convert MCP tool definitions into Gemini FunctionDeclarations"""
     tools: List[FunctionDeclaration] = []
 
-    for tool in TOOL_DEFINITIONS:
+    for i, tool in enumerate(TOOL_DEFINITIONS):
+        if not isinstance(tool, dict):
+            logger.warning(f"Skipping invalid tool at index {i}: not a dict")
+            continue
+        if "name" not in tool:
+            logger.warning(f"Skipping tool at index {i}: missing 'name' key")
+            continue
+        if "description" not in tool:
+            logger.warning(f"Tool '{tool['name']}' missing 'description'; defaulting to empty string")
+            tool["description"] = ""
+        if "parameters" not in tool:
+            logger.warning(f"Tool '{tool['name']}' missing 'parameters'; defaulting to empty dict")
+            tool["parameters"] = {}
+
         tools.append(
             FunctionDeclaration(
                 name=tool["name"],
@@ -57,6 +70,7 @@ def _convert_to_gemini_tools() -> List[FunctionDeclaration]:
             )
         )
 
+    logger.info(f"Loaded {len(tools)} Gemini tools")
     return tools
 
 
@@ -76,7 +90,7 @@ class AgentExecutor:
         self._user_id = user_id
         self._conversation_repo = ConversationRepository(session, user_id)
         self._message_repo = MessageRepository(session, user_id)
-        self._model_name = AGENT_CONFIG["model"]
+        self._model_name = AGENT_CONFIG.get("model", "default-model")
 
     async def execute(
         self,
@@ -174,8 +188,8 @@ class AgentExecutor:
 
         config = types.GenerateContentConfig(
             system_instruction=SYSTEM_PROMPT,
-            temperature=AGENT_CONFIG["temperature"],
-            max_output_tokens=AGENT_CONFIG["max_tokens"],
+            temperature=AGENT_CONFIG.get("temperature", 0.7),
+            max_output_tokens=AGENT_CONFIG.get("max_tokens", 512),
             tools=GEMINI_TOOLS,
         )
 
