@@ -8,7 +8,7 @@ from typing import Optional, List
 
 from sqlmodel import Session, select
 
-from models.conversation import ConversationDB
+from ..models.conversation import ConversationDB
 
 
 class ConversationRepository:
